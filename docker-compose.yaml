@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  web:
+    container_name: symfogram_web
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    volumes:
+      - ./:/var/www/html/
+      - ./docker/web/php.ini/:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/web/server.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - 5000:80
+
+  database:
+    container_name: symfogram_db
+    image: postgres:14.3-alpine
+    restart: always
+    volumes:
+      - ./.volumes/database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=symfogram
+    ports:
+      - 5432:5432
+
+  mailer:
+    container_name: symfogram_mailer
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
