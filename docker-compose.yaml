@@ -19,7 +19,7 @@ services:
     image: postgres:14.3-alpine
     restart: always
     volumes:
-      - ./.volumes/database:/var/lib/postgresql/data
+      - ./var/volumes/database:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
