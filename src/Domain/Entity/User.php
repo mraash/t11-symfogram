@@ -16,17 +16,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\OneToOne(mappedBy: 'owner')]
+    private ?EmailVerificationToken $emailVerificationToken = null;
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
+    /** @var string The hashed password */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $isEmailVerified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $isBased = false;
 
     public function getId(): ?int
     {
@@ -96,5 +103,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isEmailVerified(): ?bool
+    {
+        return $this->isEmailVerified;
+    }
+
+    public function setIsEmailVerified(bool $isEmailVerified): self
+    {
+        $this->isEmailVerified = $isEmailVerified;
+
+        return $this;
+    }
+
+    public function getEmailVerificationToken(): ?EmailVerificationToken
+    {
+        return $this->emailVerificationToken;
+    }
+
+    public function setEmailVerificationToken(EmailVerificationToken $emailVerificationToken): self
+    {
+        // set the owning side of the relation if necessary
+        if ($emailVerificationToken->getOwner() !== $this) {
+            $emailVerificationToken->setOwner($this);
+        }
+
+        $this->emailVerificationToken = $emailVerificationToken;
+
+        return $this;
+    }
+
+    public function isBased(): ?bool
+    {
+        return $this->isBased;
+    }
+
+    public function setIsBased(bool $isBased): self
+    {
+        $this->isBased = $isBased;
+
+        return $this;
     }
 }

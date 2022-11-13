@@ -3,43 +3,53 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Extension\Domain\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
- * @extends ServiceEntityRepository<User>
+ * @extends AbstractRepository<User>
  *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private UserPasswordHasherInterface $passwordHasher;
+
+    public function __construct(ManagerRegistry $registry, UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct($registry, User::class);
+        $this->passwordHasher = $passwordHasher;
     }
 
-    public function save(User $entity, bool $flush = false): void
+    public function create(string $email, string $plainPassword): User
+    {
+        $user = new User();
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
+
+        $user->setEmail($email);
+        $user->setPassword($hashedPassword);
+
+        $this->getEntityManager()->persist($user);
+
+        return $user;
+    }
+
+    public function save(User $entity): void
     {
         $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 
-    public function remove(User $entity, bool $flush = false): void
+    public function remove(User $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 
     /**
@@ -53,7 +63,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $user->setPassword($newHashedPassword);
 
-        $this->save($user, true);
+        $this->save($user);
+        $this->flush();
     }
 
 //    /**
