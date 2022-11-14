@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controller\Auth;
 
+use App\Domain\Entity\User;
 use App\Domain\Repository\EmailVerificationTokenRepository;
 use App\Domain\Repository\UserRepository;
 use App\Extension\Http\Controller\AbstractController;
+use App\Http\Authenticator\LoginFormAuthenticator;
+use App\Http\Input\Auth\Register\CreateProfileInput;
 use App\Http\Input\Auth\Register\RegisterInput;
 use App\Http\SupportService\EmailVerifier\EmailVerifier;
 use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
@@ -19,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegisterController extends AbstractController
 {
@@ -68,10 +72,13 @@ class RegisterController extends AbstractController
     }
 
     #[Route('/register/verify-email', methods: ['HEAD', 'GET'], name: 'actions.register.verify-email')]
-    public function verifyEmail(Request $request): RedirectResponse
-    {
+    public function verifyEmail(
+        Request $request,
+        UserAuthenticatorInterface $userAuthenticator,
+        LoginFormAuthenticator $authenticator
+    ): RedirectResponse {
         try {
-            $this->emailVerifier->verifyEmailByRequest($request);
+            $user = $this->emailVerifier->verifyEmailByRequest($request);
         }
         catch (TokenNotProvidedException) {
             dd('invalid request');
@@ -86,18 +93,35 @@ class RegisterController extends AbstractController
             dd('something went wrong');
         }
 
+        $userAuthenticator->authenticateUser($user, $authenticator, $request);
+
         return $this->redirectToRoute('pages.register.create-profile');
     }
 
     #[Route('/register/create-profile', methods: ['HEAD', 'GET'], name: 'pages.register.create-profile')]
     public function showProfileCreationsForm(): Response
     {
-        return new Response('create profile');
+        return $this->render('pages/auth/create-profile.twig');
     }
 
     #[Route('/register/create-profile', methods: ['POST'], name: 'actions.register.create-profile')]
-    public function createProfile(): RedirectResponse
+    public function createProfile(CreateProfileInput $input): RedirectResponse
     {
+        $firstName = $input->getFirstNameInput();
+        $lastName = $input->getLastNameInput();
+        $bio = $input->getBioInput();
+
+        /** @var User */
+        $user = $this->getUser();
+
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setBio($bio);
+        $user->setIsBased(true);
+
+        $this->userRepository->save($user);
+        $this->userRepository->flush();
+
         return $this->redirectToRoute('pages.home');
     }
 }

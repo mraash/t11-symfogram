@@ -1,0 +1,30 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}Create profile{% endblock %}
+
+{% block body %}
+    <h1>Create profile</h1>
+    <form action="{{ path('actions.register.create-profile') }}" method="post">
+        <div>
+            First name:
+            <input
+                name="first_name"
+            >
+        </div>
+        <div>
+            Last name:
+            <input
+                name="last_name"
+            >
+        </div>
+        <div>
+            Biography:
+            <textarea
+                name="bio"
+            ></textarea>
+        </div>
+        <div>
+            <button type="submit">Send</button>
+        </div>
+    </form>
+{% endblock %}

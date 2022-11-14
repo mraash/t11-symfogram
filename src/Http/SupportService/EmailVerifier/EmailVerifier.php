@@ -53,7 +53,7 @@ class EmailVerifier
         $this->mailer->send($email);
     }
 
-    public function verifyEmailByRequest(Request $request): void
+    public function verifyEmailByRequest(Request $request): User
     {
         $tokenStr = $request->query->get('token', null);
 
@@ -76,5 +76,7 @@ class EmailVerifier
 
         $user->setIsEmailVerified(true);
         $this->userRepository->flush();
+
+        return $user;
     }
 }
