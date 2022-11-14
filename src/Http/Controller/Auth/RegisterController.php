@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controller\Auth;
 
-use App\Domain\Entity\User;
+use App\Domain\Repository\EmailVerificationTokenRepository;
 use App\Domain\Repository\UserRepository;
 use App\Extension\Http\Controller\AbstractController;
 use App\Http\Input\Auth\Register\RegisterInput;
 use App\Http\SupportService\EmailVerifier\EmailVerifier;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
+use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
+use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +24,18 @@ class RegisterController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
     private UserRepository $userRepository;
+    private EmailVerificationTokenRepository $emailVerificationTokenRepository;
 
     public function __construct(
         RequestStack $requestStack,
         EmailVerifier $emailVerifier,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        EmailVerificationTokenRepository $emailVerificationTokenRepository
     ) {
         parent::__construct($requestStack);
         $this->emailVerifier = $emailVerifier;
         $this->userRepository = $userRepository;
+        $this->emailVerificationTokenRepository = $emailVerificationTokenRepository;
     }
 
     #[Route('/register', methods: ['HEAD', 'GET'], name: 'pages.register')]
@@ -55,15 +62,31 @@ class RegisterController extends AbstractController
 
         $this->emailVerifier->createTokenAndSendEmail($user, $message);
 
+        $this->addInfoFlash('Please check your email.');
+
         return $this->redirectBack();
     }
 
     #[Route('/register/verify-email', methods: ['HEAD', 'GET'], name: 'actions.register.verify-email')]
-    public function verifyEmail(): RedirectResponse
+    public function verifyEmail(Request $request): RedirectResponse
     {
-        dd('verify email');
+        try {
+            $this->emailVerifier->verifyEmailByRequest($request);
+        }
+        catch (TokenNotProvidedException) {
+            dd('invalid request');
+        }
+        catch (TokenNotFoundException) {
+            dd('token not found');
+        }
+        catch (EmailIsAlreadyVerifiedException) {
+            dd('email is already verified');
+        }
+        catch (Exception) {
+            dd('something went wrong');
+        }
 
-        return $this->redirectToRoute('pages.register');
+        return $this->redirectToRoute('pages.register.create-profile');
     }
 
     #[Route('/register/create-profile', methods: ['HEAD', 'GET'], name: 'pages.register.create-profile')]

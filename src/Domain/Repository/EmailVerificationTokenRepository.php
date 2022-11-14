@@ -4,6 +4,7 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\EmailVerificationToken;
 use App\Domain\Entity\User;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Extension\Domain\Repository\AbstractRepository;
 use App\Library\Token\RandomStringGenerator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -47,4 +48,20 @@ class EmailVerificationTokenRepository extends AbstractRepository
     {
         $this->getEntityManager()->remove($entity);
     }
+
+   public function findOneByToken(string $token): EmailVerificationToken
+   {
+        $token = $this->createQueryBuilder('t')
+           ->andWhere('t.token = :val')
+           ->setParameter('val', $token)
+           ->getQuery()
+           ->getOneOrNullResult()
+        ;
+
+        if ($token === null) {
+            throw new EntityNotFoundException();
+        }
+
+        return $token;
+   }
 }

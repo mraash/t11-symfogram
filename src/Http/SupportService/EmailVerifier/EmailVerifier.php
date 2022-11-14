@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Http\SupportService\EmailVerifier;
 
 use App\Domain\Entity\User;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Repository\EmailVerificationTokenRepository;
 use App\Domain\Repository\UserRepository;
+use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
+use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
+use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
@@ -49,7 +53,28 @@ class EmailVerifier
         $this->mailer->send($email);
     }
 
-    public function verifyToken(Request $request): void
+    public function verifyEmailByRequest(Request $request): void
     {
+        $tokenStr = $request->query->get('token', null);
+
+        if ($tokenStr === null) {
+            throw new TokenNotProvidedException();
+        }
+
+        try {
+            $token = $this->emailVerificationTokenRepository->findOneByToken($tokenStr);
+        }
+        catch(EntityNotFoundException) {
+            throw new TokenNotFoundException();
+        }
+
+        $user = $token->getOwner();
+
+        if ($user->isEmailVerified()) {
+            throw new EmailIsAlreadyVerifiedException();
+        }
+
+        $user->setIsEmailVerified(true);
+        $this->userRepository->flush();
     }
 }

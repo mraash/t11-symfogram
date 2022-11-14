@@ -23,4 +23,19 @@ abstract class AbstractController extends AbstractSymfonyController
         $path = $this->currentRequest->headers->get('referer');
         return $this->redirect($path, $status);
     }
+
+    public function addInfoFlash(string $message): void
+    {
+        $this->addFlash('message', $message);
+    }
+
+    public function addSuccessFlash(string $message): void
+    {
+        $this->addFlash('success', $message);
+    }
+
+    public function addErrorFlash(string $message): void
+    {
+        $this->addFlash('error', $message);
+    }
 }
