@@ -51,6 +51,10 @@ class RegisterController extends AbstractController
     #[Route('/register', methods: ['POST'], name: 'actions.register')]
     public function register(RegisterInput $input): RedirectResponse
     {
+        if (!$this->validateInput($input)) {
+            return $this->redirectBack();
+        }
+
         $email = $input->getEmailInput();
         $password = $input->getPasswordInput();
 
@@ -66,7 +70,7 @@ class RegisterController extends AbstractController
 
         $this->emailVerifier->createTokenAndSendEmail($user, $message);
 
-        $this->addInfoFlash('Please check your email.');
+        $this->addSuccessFlash('Please check your email.');
 
         return $this->redirectBack();
     }
@@ -81,16 +85,21 @@ class RegisterController extends AbstractController
             $user = $this->emailVerifier->verifyEmailByRequest($request);
         }
         catch (TokenNotProvidedException) {
-            dd('invalid request');
+            $this->addErrorFlash('Request is invalid.');
+            $this->redirectToRoute('pages.register');
         }
         catch (TokenNotFoundException) {
-            dd('token not found');
+            $this->addErrorFlash('Request is invalid.');
+            $this->redirectToRoute('pages.register');
         }
         catch (EmailIsAlreadyVerifiedException) {
-            dd('email is already verified');
+            $this->addInfoFlash('The email has already been confirmed.');
+            $this->redirectToRoute('pages.register');
         }
-        catch (Exception) {
-            dd('something went wrong');
+
+        if (!$user->isVerified()) {
+            $this->addErrorFlash('Something went wrong. Your email is not verified.');
+            $this->redirectToRoute('pages.register');
         }
 
         $userAuthenticator->authenticateUser($user, $authenticator, $request);
@@ -107,6 +116,10 @@ class RegisterController extends AbstractController
     #[Route('/register/create-profile', methods: ['POST'], name: 'actions.register.create-profile')]
     public function createProfile(CreateProfileInput $input): RedirectResponse
     {
+        if (!$this->validateInput($input)) {
+            return $this->redirectBack();
+        }
+
         $firstName = $input->getFirstNameInput();
         $lastName = $input->getLastNameInput();
         $bio = $input->getBioInput();

@@ -6,6 +6,9 @@ namespace App\Http\SupportService\EmailVerifier\Exceptions;
 
 use Exception;
 
+/**
+ * Token not found in db.
+ */
 class TokenNotFoundException extends Exception
 {
 }

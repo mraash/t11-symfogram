@@ -49,6 +49,9 @@ class EmailVerificationTokenRepository extends AbstractRepository
         $this->getEntityManager()->remove($entity);
     }
 
+    /**
+     * @throws EntityNotFoundException
+     */
    public function findOneByToken(string $token): EmailVerificationToken
    {
         $token = $this->createQueryBuilder('t')

@@ -53,6 +53,11 @@ class EmailVerifier
         $this->mailer->send($email);
     }
 
+    /**
+     * @throws TokenNotProvidedException
+     * @throws TokenNotFoundException
+     * @throws EmailIsAlreadyVerifiedException
+     */
     public function verifyEmailByRequest(Request $request): User
     {
         $tokenStr = $request->query->get('token', null);
@@ -70,7 +75,7 @@ class EmailVerifier
 
         $user = $token->getOwner();
 
-        if ($user->isEmailVerified()) {
+        if ($user->isVerified()) {
             throw new EmailIsAlreadyVerifiedException();
         }
 

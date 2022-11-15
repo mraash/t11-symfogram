@@ -6,6 +6,9 @@ namespace App\Library\Token;
 
 class RandomStringGenerator
 {
+    /**
+     * Generate random string that contains 0-1, a-z, A-Z charactars
+     */
     public function generateSimpleToken(int $length): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

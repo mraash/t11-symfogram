@@ -29,12 +29,7 @@ abstract class AbstractInput
         return $this->validator->validate($this->parameters, $this->rules());
     }
 
-    public function isValid(): bool
-    {
-        return $this->validate()->count() === 0;
-    }
-
-    public function param(string $name): mixed
+    protected function param(string $name): mixed
     {
         return $this->parameters[$name] ?? null;
     }

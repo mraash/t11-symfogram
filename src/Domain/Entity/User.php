@@ -23,16 +23,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = ['ROLE_USER'];
 
-    /** @var string The hashed password */
+    /**
+     * @var string The hashed password.
+     */
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(options: ['default' => false])]
-    private ?bool $isEmailVerified = false;
+    /**
+     * @var string Is email verified.
+     */
+    #[ORM\Column]
+    private ?bool $isVerified = false;
 
-    #[ORM\Column(options: ['default' => false])]
+    /**
+     * @var string Is profile information given (full name, bio, avatar) after email verification.
+     */
+    #[ORM\Column]
     private ?bool $isBased = false;
 
     #[ORM\Column(length: 40, nullable: true)]
@@ -114,14 +122,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isEmailVerified(): ?bool
+    public function isVerified(): ?bool
     {
-        return $this->isEmailVerified;
+        return $this->isVerified;
     }
 
-    public function setIsEmailVerified(bool $isEmailVerified): self
+    public function setIsEmailVerified(bool $isVerified): self
     {
-        $this->isEmailVerified = $isEmailVerified;
+        $this->isVerified = $isVerified;
 
         return $this;
     }
