@@ -20,6 +20,6 @@ class HomeController extends AbstractController
     #[Route('/home', methods: ['HEAD', 'GET'], name: 'pages.home')]
     public function showHome(): Response
     {
-        return new Response('Home page');
+        return $this->render('pages/home.twig');
     }
 }
