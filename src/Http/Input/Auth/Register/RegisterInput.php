@@ -47,17 +47,17 @@ class RegisterInput extends AbstractBaseInput
         ];
     }
 
-    public function getEmailInput(): string
+    public function getEmailParam(): string
     {
         return $this->param('email');
     }
 
-    public function getPasswordInput(): string
+    public function getPasswordParam(): string
     {
         return $this->param('password');
     }
 
-    public function getPasswordRepeatInput(): string
+    public function getPasswordRepeatParam(): string
     {
         return $this->param('password_repeat');
     }

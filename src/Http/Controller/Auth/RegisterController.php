@@ -55,8 +55,8 @@ class RegisterController extends AbstractController
             return $this->redirectBack();
         }
 
-        $email = $input->getEmailInput();
-        $password = $input->getPasswordInput();
+        $email = $input->getEmailParam();
+        $password = $input->getPasswordParam();
 
         $user = $this->userRepository->create($email, $password);
         $this->userRepository->flush();
@@ -85,15 +85,15 @@ class RegisterController extends AbstractController
             $user = $this->emailVerifier->verifyEmailByRequest($request);
         }
         catch (TokenNotProvidedException) {
-            $this->addErrorFlash('Request is invalid.');
+            $this->addErrorFlash('Email verification request was invalid.');
             $this->redirectToRoute('pages.register');
         }
         catch (TokenNotFoundException) {
-            $this->addErrorFlash('Request is invalid.');
+            $this->addErrorFlash('Email verification request was invalid.');
             $this->redirectToRoute('pages.register');
         }
         catch (EmailIsAlreadyVerifiedException) {
-            $this->addInfoFlash('The email has already been confirmed.');
+            $this->addInfoFlash('Your email has already been confirmed.');
             $this->redirectToRoute('pages.register');
         }
 
@@ -120,9 +120,9 @@ class RegisterController extends AbstractController
             return $this->redirectBack();
         }
 
-        $firstName = $input->getFirstNameInput();
-        $lastName = $input->getLastNameInput();
-        $bio = $input->getBioInput();
+        $firstName = $input->getFirstNameParam();
+        $lastName = $input->getLastNameParam();
+        $bio = $input->getBioParam();
 
         /** @var User */
         $user = $this->getUser();
