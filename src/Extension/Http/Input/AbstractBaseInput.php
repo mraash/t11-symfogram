@@ -11,10 +11,8 @@ abstract class AbstractBaseInput extends AbstractInput
     protected function rules(): Collection
     {
         return new Collection([
-            'allowExtraFields' => false,
-            'allowMissingFields' => false,
-            'extraFieldsMessage' => 'Unexpected field {{ field }}.',
-            'missingFieldsMessage' => 'Field {{ field }} is missing.',
+            'allowExtraFields' => true,
+            'allowMissingFields' => true,
             'fields' => $this->fields(),
         ]);
     }
