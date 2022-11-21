@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Input\Auth\Register;
 
+use App\Domain\Entity\User;
 use App\Extension\Http\Input\AbstractBaseInput;
+use App\Extension\Support\Validator\EntityExists;
+use App\Extension\Support\Validator\EntityMissing;
 use App\Extension\Support\Validator\NotEmpty;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Required;
 
 class RegisterInput extends AbstractBaseInput
 {
@@ -26,6 +27,11 @@ class RegisterInput extends AbstractBaseInput
                 new Length(
                     max: 180,
                     maxMessage: 'Email should have {{ limit }} characters or less.'
+                ),
+                new EntityMissing(
+                    field: 'email',
+                    entityClass: User::class,
+                    message: 'Email is taken.'
                 ),
             ],
             'password' => [

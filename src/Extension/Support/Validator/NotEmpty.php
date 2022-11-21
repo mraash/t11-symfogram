@@ -17,8 +17,6 @@ class NotEmpty extends Constraint
     {
         parent::__construct();
 
-        if ($message !== null) {
-            $this->message = $message;
-        }
+        $this->message = $message ?? $this->message;
     }
 }

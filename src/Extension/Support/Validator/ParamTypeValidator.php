@@ -6,7 +6,7 @@ namespace App\Extension\Support\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\InvalidArgumentException;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -60,7 +60,7 @@ class ParamTypeValidator extends ConstraintValidator
         if (!isset($this->types[$type])) {
             $allowedTypes = implode(', ', array_keys($this->types));
 
-            throw new InvalidArgumentException(
+            throw new ConstraintDefinitionException(
                 "Invalid type argument. It can be only {$allowedTypes}. {$type} given."
             );
         }
@@ -88,7 +88,7 @@ class ParamTypeValidator extends ConstraintValidator
         if (!isset($this->types[$constraint->type])) {
             $allowedTypes = implode(', ', array_keys($this->types));
 
-            throw new InvalidArgumentException(
+            throw new ConstraintDefinitionException(
                 "Invalid ParamType type argument. It can be only {$allowedTypes}. {$constraint->type} given."
             );
         }
