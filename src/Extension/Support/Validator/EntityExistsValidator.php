@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Extension\Support\Validator;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
@@ -13,14 +12,14 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 class EntityExistsValidator extends ConstraintValidator
 {
-    private EntityManager $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!($constraint instanceof EntityExists)) {
             throw new UnexpectedTypeException($constraint, EntityExists::class);

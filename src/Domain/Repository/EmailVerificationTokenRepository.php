@@ -10,7 +10,7 @@ use App\Library\Token\RandomStringGenerator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<EmailVerificationToken>
+ * @extends AbstractRepository<EmailVerificationToken>
  *
  * @method EmailVerificationToken|null find($id, $lockMode = null, $lockVersion = null)
  * @method EmailVerificationToken|null findOneBy(array $criteria, array $orderBy = null)
@@ -52,14 +52,23 @@ class EmailVerificationTokenRepository extends AbstractRepository
     /**
      * @throws EntityNotFoundException
      */
-    public function findOneByToken(string $token): EmailVerificationToken
+    public function findOneByTokenOrNull(string $token): ?EmailVerificationToken
     {
-        $token = $this->createQueryBuilder('t')
+        /** @var ?EmailVerificationToken */
+        return $this->createQueryBuilder('t')
            ->andWhere('t.token = :val')
            ->setParameter('val', $token)
            ->getQuery()
            ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findOneByToken(string $token): ?EmailVerificationToken
+    {
+        $token = $this->findOneByToken($token);
 
         if ($token === null) {
             throw new EntityNotFoundException();

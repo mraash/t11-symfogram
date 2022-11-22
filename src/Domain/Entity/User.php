@@ -22,6 +22,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    /**
+     * @var string[]
+     */
     #[ORM\Column]
     private array $roles = ['ROLE_USER'];
 
@@ -32,13 +35,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     /**
-     * @var string Is email verified.
+     * @var bool Is email verified.
      */
     #[ORM\Column]
     private ?bool $isVerified = false;
 
     /**
-     * @var string Is profile information given (full name, bio, avatar) after email verification.
+     * @var bool Is profile information given (full name, bio, avatar) after email verification.
      */
     #[ORM\Column]
     private ?bool $isBased = false;
@@ -81,6 +84,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return string[]
      */
     public function getRoles(): array
     {
@@ -91,6 +96,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param string[] $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -116,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

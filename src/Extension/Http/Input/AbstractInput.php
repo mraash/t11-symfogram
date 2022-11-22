@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Extension\Http\Input;
 
+use App\Exceptions\UnexpectedReturnTypeException;
 use App\Extension\Support\Validator\ParamType;
 use App\Extension\Support\Validator\ParamTypeValidator;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ abstract class AbstractInput
     private ValidatorInterface $validator;
     private ParamTypeValidator $paramTypeValidator;  // Needed only for parameter conversion.
     private Collection $rules;
+    /** @var array<string,mixed> */
     private array $params;
 
     public function __construct(
@@ -27,10 +29,10 @@ abstract class AbstractInput
         $this->validator = $validator;
         $this->paramTypeValidator = $paramTypeValidator;
 
-        $currentRequest = $requestStack->getCurrentRequest();
+        $currentRequest = $requestStack->getCurrentRequest() ?? throw new UnexpectedReturnTypeException();
         $rules = $this->rules();
 
-        $rawParams = $this->pullParams($currentRequest);
+        $rawParams = $this->pullRawParams($currentRequest);
         $params = $this->convertParamTypes($rawParams, $rules);
 
         $this->rules = $rules;
@@ -49,31 +51,40 @@ abstract class AbstractInput
         return $this->params[$key] ?? null;
     }
 
-    private function pullParams(Request $request): array
+    /**
+     * @return array<string,string>
+     */
+    private function pullRawParams(Request $request): array
     {
         return $request->query->all() + $request->request->all();
     }
 
+    /**
+     * @param array<string,string> $params
+     *
+     * @return array<string,mixed>
+     */
     private function convertParamTypes(array $params, Collection $rules): array
     {
         $newParams = $params;
 
         foreach ($rules->fields as $param => $paramConstraints) {
-            /** @var ?ParamType */
-            $paramType = null;
+            // $param will be string, but phpstan says that it can be int.
+            $paramKey = (string)$param;
 
             foreach ($paramConstraints->constraints as $constraint) {
                 if ($constraint instanceof ParamType) {
-                    $paramType = $constraint;
+                    /** @var ParamType */
+                    $typeConstraint = $constraint;
                     break;
                 }
             }
 
-            if ($constraint instanceof ParamType) {
-                $type = $paramType->type;
-                $value = $newParams[$param] ?? null;
+            if (isset($typeConstraint)) {
+                $type = $typeConstraint->type;
+                $value = $params[$param] ?? null;
 
-                $newParams[$param] = $this->paramTypeValidator->convertIfPossible($type, $value);
+                $newParams[$paramKey] = $this->paramTypeValidator->convertIfPossible($type, $value);
             }
         }
 

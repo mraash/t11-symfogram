@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Extension\Http\Controller;
 
+use App\Exceptions\UnexpectedReturnTypeException;
 use App\Extension\Http\Input\AbstractInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as AbstractSymfonyController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,12 +18,12 @@ abstract class AbstractController extends AbstractSymfonyController
 
     public function __construct(RequestStack $requestStack)
     {
-        $this->currentRequest = $requestStack->getCurrentRequest();
+        $this->currentRequest = $requestStack->getCurrentRequest() ?? throw new UnexpectedReturnTypeException();
     }
 
     protected function redirectBack(int $status = 302): RedirectResponse
     {
-        $path = $this->currentRequest->headers->get('referer');
+        $path = $this->currentRequest->headers->get('referer') ?? throw new UnexpectedReturnTypeException();
 
         return $this->redirect($path, $status);
     }
@@ -56,7 +57,8 @@ abstract class AbstractController extends AbstractSymfonyController
             return true;
         }
 
-        $this->addErrorFlash($validationInfo->get(0)->getMessage());
+        $message = (string) $validationInfo->get(0)->getMessage();
+        $this->addErrorFlash($message);
 
         return false;
     }

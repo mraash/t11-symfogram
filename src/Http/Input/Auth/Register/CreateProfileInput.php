@@ -43,16 +43,19 @@ class CreateProfileInput extends AbstractBaseInput
 
     public function getFirstNameParam(): string
     {
+        /** @var string */
         return $this->param('first_name');
     }
 
     public function getLastNameParam(): string
     {
+        /** @var string */
         return $this->param('last_name');
     }
 
     public function getBioParam(): string
     {
+        /** @var string */
         return $this->param('bio');
     }
 }

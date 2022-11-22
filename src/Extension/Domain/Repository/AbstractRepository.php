@@ -7,6 +7,10 @@ namespace App\Extension\Domain\Repository;
 use App\Domain\Exception\EntityNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
+/**
+ * @template T of object
+ * @template-extends ServiceEntityRepository<T>
+ */
 abstract class AbstractRepository extends ServiceEntityRepository
 {
     public function flush(): void
@@ -14,7 +18,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function findByIdOrNull(int $id): object
+    public function findByIdOrNull(int $id): ?object
     {
         return $this->find($id);
     }

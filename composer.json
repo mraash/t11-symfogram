@@ -45,6 +45,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^9.5",
         "squizlabs/php_codesniffer": "^3.7",
         "symfony/browser-kit": "6.0.*",

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ParamTypeValidator extends ConstraintValidator
 {
+    /** @var array<string,array<string,string>> */
     private array $types = [
         // ...
         'int' => [
@@ -152,6 +153,7 @@ class ParamTypeValidator extends ConstraintValidator
 
     private function toNumber(string $value): int|float
     {
+        /** @phpstan-ignore-next-line */
         return $value + 0;
     }
 

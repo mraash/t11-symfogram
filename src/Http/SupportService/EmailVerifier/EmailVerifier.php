@@ -60,6 +60,7 @@ class EmailVerifier
      */
     public function verifyEmailByRequest(Request $request): User
     {
+        /** @var string|null */
         $tokenStr = $request->query->get('token', null);
 
         if ($tokenStr === null) {

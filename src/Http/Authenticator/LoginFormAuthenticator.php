@@ -17,13 +17,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 class LoginFormAuthenticator extends AbstractAuthenticator
 {
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
-    {
-        $this->urlGenerator = $urlGenerator;
-    }
-
     public function supports(Request $request): bool
     {
         $isLoginMethod = $request->isMethod('POST');
@@ -34,8 +27,10 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->get('email');
-        $password = $request->get('password');
+        /** @var string */
+        $email = $request->get('email', '');
+        /** @var string */
+        $password = $request->get('password', '');
 
         return new Passport(
             new UserBadge($email),

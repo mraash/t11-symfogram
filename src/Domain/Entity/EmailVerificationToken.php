@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entity;
 
-use App\Repository\Domain\Entity\EmailVerificationTokenRepository;
+use App\Domain\Repository\EmailVerificationTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmailVerificationTokenRepository::class)]

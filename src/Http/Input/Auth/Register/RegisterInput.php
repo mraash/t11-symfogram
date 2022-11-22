@@ -55,16 +55,19 @@ class RegisterInput extends AbstractBaseInput
 
     public function getEmailParam(): string
     {
+        /** @var string */
         return $this->param('email');
     }
 
     public function getPasswordParam(): string
     {
+        /** @var string */
         return $this->param('password');
     }
 
     public function getPasswordRepeatParam(): string
     {
+        /** @var string */
         return $this->param('password_repeat');
     }
 }
