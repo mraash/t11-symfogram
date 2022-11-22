@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Library\Token;
+namespace Library\Token;
 
 class RandomStringGenerator
 {

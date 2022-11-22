@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SymfonyExtension\Support\Validator;
+
+use Symfony\Component\Validator\Constraint;
+
+/**
+ * Note: Before actually validating a parameter with this constraint, convert the parameter
+ *  with ParamTypeValidator::convertIfPossible() method.
+ */
+class ParamType extends Constraint
+{
+    public string $message = 'This value should be of type {{ expected }}.';
+    public string $type;
+
+    public function __construct(string $type, string $message = null)
+    {
+        parent::__construct();
+
+        $this->type = $type;
+        $this->message = $message ?? $this->message;
+    }
+}

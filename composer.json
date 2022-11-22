@@ -70,7 +70,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/app/",
+            "SymfonyExtension\\": "src/symfony-extension/",
+            "Library\\": "src/library/"
         }
     },
     "autoload-dev": {

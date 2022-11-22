@@ -14,11 +14,23 @@ services:
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
+        resource: '../src/app'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Domain/Entity/'
-            - '../src/Kernel.php'
+            - '../src/app/DependencyInjection/'
+            - '../src/app/Domain/Entity/'
+            - '../src/app/Kernel.php'
+    SymfonyExtension\:
+        resource: '../src/symfony-extension'
+        exclude:
+            - '../src/symfony-extension/DependencyInjection/'
+            - '../src/symfony-extension/Domain/Entity/'
+            - '../src/symfony-extension/Kernel.php'
+    Library\:
+        resource: '../src/library'
+        exclude:
+            - '../src/library/DependencyInjection/'
+            - '../src/library/Domain/Entity/'
+            - '../src/library/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
