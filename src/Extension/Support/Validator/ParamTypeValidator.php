@@ -48,7 +48,7 @@ class ParamTypeValidator extends ConstraintValidator
 
     /**
      * If the value is convertible, method will return converted value. Otherwise unchanged value.
-     *  Example: If type is integer and value is '123' - the integer 123 will be returned. If type 
+     *  Example: If type is integer and value is '123' - the integer 123 will be returned. If type
      *  is integer and value is 'abc' - 'abc' string will be returned.
      *
      * @param string $type First argument of ParamType constraint.

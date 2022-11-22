@@ -52,8 +52,8 @@ class EmailVerificationTokenRepository extends AbstractRepository
     /**
      * @throws EntityNotFoundException
      */
-   public function findOneByToken(string $token): EmailVerificationToken
-   {
+    public function findOneByToken(string $token): EmailVerificationToken
+    {
         $token = $this->createQueryBuilder('t')
            ->andWhere('t.token = :val')
            ->setParameter('val', $token)
@@ -66,5 +66,5 @@ class EmailVerificationTokenRepository extends AbstractRepository
         }
 
         return $token;
-   }
+    }
 }

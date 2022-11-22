@@ -72,7 +72,7 @@ abstract class AbstractInput
             if ($constraint instanceof ParamType) {
                 $type = $paramType->type;
                 $value = $newParams[$param] ?? null;
-    
+
                 $newParams[$param] = $this->paramTypeValidator->convertIfPossible($type, $value);
             }
         }

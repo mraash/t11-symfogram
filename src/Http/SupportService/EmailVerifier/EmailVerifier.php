@@ -69,7 +69,7 @@ class EmailVerifier
         try {
             $token = $this->emailVerificationTokenRepository->findOneByToken($tokenStr);
         }
-        catch(EntityNotFoundException) {
+        catch (EntityNotFoundException) {
             throw new TokenNotFoundException();
         }
 
