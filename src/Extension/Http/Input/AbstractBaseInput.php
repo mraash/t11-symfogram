@@ -19,7 +19,7 @@ abstract class AbstractBaseInput extends AbstractInput
     }
 
     /**
-     * @return array<string,Constraint|array<int,Constraint>>
+     * @return array<string,Constraint|Constraint[]>
      */
     protected function fields(): array
     {

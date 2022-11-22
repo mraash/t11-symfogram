@@ -3,7 +3,7 @@
 {% block title %}Create profile{% endblock %}
 
 {% block body %}
-    <h1>Create profile</h1>
+    <h2>Create profile</h2>
     <form action="{{ path('actions.register.create-profile') }}" method="post">
         <div>
             First name:
@@ -24,7 +24,10 @@
             ></textarea>
         </div>
         <div>
-            <button type="submit">Send</button>
+            <a href="{{ path('actions.logout') }}">Logout</a>
         </div>
+        <button type="submit" style="margin-top: 5px;">
+            Create
+        </button>
     </form>
 {% endblock %}

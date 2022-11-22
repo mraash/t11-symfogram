@@ -1,10 +1,10 @@
 {% extends 'layouts/base.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block body %}
-    <h2>Register</h2>
-    <form action="{{ path('actions.register') }}" method="post">
+    <h2>Login</h2>
+    <form action="{{ path('actions.login') }}" method="post">
         <div>
             <label for="email">Email:</label>
             <input
@@ -21,18 +21,10 @@
             >
         </div>
         <div>
-            <label for="password_repeat">Repeat password:</label>
-            <input
-                id="password_repeat"
-                name="password_repeat"
-                type="password"
-            >
-        </div>
-        <div>
-            <a href="{{ path('pages.login') }}">Log in</a>
+            <a href="{{ path('pages.register') }}">Register</a>
         </div>
         <button type="submit" style="margin-top: 5px;">
-            Register
+            Login
         </button>
     </form>
 {% endblock %}

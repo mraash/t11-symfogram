@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegisterController extends AbstractController
@@ -108,7 +110,7 @@ class RegisterController extends AbstractController
     }
 
     #[Route('/register/create-profile', methods: ['POST'], name: 'actions.register.create-profile')]
-    public function createProfile(CreateProfileInput $input): RedirectResponse
+    public function createProfile(CreateProfileInput $input, TokenStorageInterface $tokenStorage): RedirectResponse
     {
         if (!$this->validateInput($input)) {
             return $this->redirectBack();
@@ -124,10 +126,15 @@ class RegisterController extends AbstractController
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
         $user->setBio($bio);
+
         $user->addBasedRole();
 
         $this->userRepository->save($user);
         $this->userRepository->flush();
+
+        // Create new token because user has new role
+        $newToken = new UsernamePasswordToken($user, 'main', $user->getRoles());
+        $tokenStorage->setToken($newToken);
 
         return $this->redirectToRoute('pages.home');
     }
