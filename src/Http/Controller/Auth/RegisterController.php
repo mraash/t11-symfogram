@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controller\Auth;
 
 use App\Domain\Entity\User;
-use App\Domain\Repository\EmailVerificationTokenRepository;
 use App\Domain\Repository\UserRepository;
 use App\Extension\Http\Controller\AbstractController;
 use App\Http\Authenticator\LoginFormAuthenticator;
@@ -15,7 +14,6 @@ use App\Http\SupportService\EmailVerifier\EmailVerifier;
 use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
-use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,18 +26,15 @@ class RegisterController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
     private UserRepository $userRepository;
-    private EmailVerificationTokenRepository $emailVerificationTokenRepository;
 
     public function __construct(
         RequestStack $requestStack,
         EmailVerifier $emailVerifier,
         UserRepository $userRepository,
-        EmailVerificationTokenRepository $emailVerificationTokenRepository
     ) {
         parent::__construct($requestStack);
         $this->emailVerifier = $emailVerifier;
         $this->userRepository = $userRepository;
-        $this->emailVerificationTokenRepository = $emailVerificationTokenRepository;
     }
 
     #[Route('/register', methods: ['HEAD', 'GET'], name: 'pages.register')]
@@ -81,25 +76,28 @@ class RegisterController extends AbstractController
         UserAuthenticatorInterface $userAuthenticator,
         LoginFormAuthenticator $authenticator
     ): RedirectResponse {
+        /** @var User */
+        $user = null;
+
         try {
             $user = $this->emailVerifier->verifyEmailByRequest($request);
         }
         catch (TokenNotProvidedException) {
             $this->addErrorFlash('Email verification request was invalid.');
-            $this->redirectToRoute('pages.register');
+            return $this->redirectToRoute('pages.register');
         }
         catch (TokenNotFoundException) {
             $this->addErrorFlash('Email verification request was invalid.');
-            $this->redirectToRoute('pages.register');
+            return $this->redirectToRoute('pages.register');
         }
         catch (EmailIsAlreadyVerifiedException) {
             $this->addInfoFlash('Your email has already been confirmed.');
-            $this->redirectToRoute('pages.register');
+            return $this->redirectToRoute('pages.register');
         }
 
         if (!$user->isVerified()) {
             $this->addErrorFlash('Something went wrong. Your email is not verified.');
-            $this->redirectToRoute('pages.register');
+            return $this->redirectToRoute('pages.register');
         }
 
         $userAuthenticator->authenticateUser($user, $authenticator, $request);

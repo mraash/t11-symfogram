@@ -14,13 +14,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;  /** @phpstan-ignore-line */
 
     #[ORM\OneToOne(mappedBy: 'owner')]
-    private ?EmailVerificationToken $emailVerificationToken = null;
+    private EmailVerificationToken $emailVerificationToken;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private string $email;
 
     /**
      * @var string[]
@@ -32,35 +32,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password.
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private string $password;
 
     /**
      * @var bool Is email verified.
      */
     #[ORM\Column]
-    private ?bool $isVerified = false;
+    private bool $isVerified = false;
 
     /**
      * @var bool Is profile information given (full name, bio, avatar) after email verification.
      */
     #[ORM\Column]
-    private ?bool $isBased = false;
+    private bool $isBased = false;
 
     #[ORM\Column(length: 40, nullable: true)]
-    private ?string $firstName = null;
+    private ?string $firstName;
 
     #[ORM\Column(length: 40, nullable: true)]
-    private ?string $lastName = null;
+    private ?string $lastName;
 
     #[ORM\Column(length: 350, nullable: true)]
-    private ?string $bio = null;
+    private ?string $bio;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -130,19 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): ?bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsEmailVerified(bool $isVerified): self
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    public function getEmailVerificationToken(): ?EmailVerificationToken
+    public function getEmailVerificationToken(): EmailVerificationToken
     {
         return $this->emailVerificationToken;
     }
@@ -159,7 +147,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isBased(): ?bool
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsEmailVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function isBased(): bool
     {
         return $this->isBased;
     }
@@ -171,7 +171,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstName(): string|null
     {
         return $this->firstName;
     }
@@ -183,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLastName(): string|null
     {
         return $this->lastName;
     }
@@ -195,7 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBio(): ?string
+    public function getBio(): string|null
     {
         return $this->bio;
     }

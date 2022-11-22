@@ -11,21 +11,21 @@ class EmailVerificationToken
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;  /** @phpstan-ignore-line */
 
     #[ORM\OneToOne(inversedBy: 'emailVerificationToken')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?User $owner = null;
+    private User $owner;
 
     #[ORM\Column(length: 255)]
-    private ?string $token = null;
+    private string $token;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getOwner(): ?User
+    public function getOwner(): User
     {
         return $this->owner;
     }
@@ -37,7 +37,7 @@ class EmailVerificationToken
         return $this;
     }
 
-    public function getToken(): ?string
+    public function getToken(): string
     {
         return $this->token;
     }

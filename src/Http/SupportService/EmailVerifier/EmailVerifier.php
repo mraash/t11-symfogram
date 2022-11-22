@@ -11,9 +11,9 @@ use App\Domain\Repository\UserRepository;
 use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\RawMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EmailVerifier
@@ -35,7 +35,7 @@ class EmailVerifier
         $this->emailVerificationTokenRepository = $emailVerificationTokenRepository;
     }
 
-    public function createTokenAndSendEmail(User $user, RawMessage $email): void
+    public function createTokenAndSendEmail(User $user, TemplatedEmail $email): void
     {
         $token = $this->emailVerificationTokenRepository->create($user);
         $this->emailVerificationTokenRepository->flush();

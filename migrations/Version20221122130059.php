@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221115144345 extends AbstractMigration
+final class Version20221122130059 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,8 +20,6 @@ final class Version20221115144345 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SEQUENCE email_verification_token_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE email_verification_token (id INT NOT NULL, owner_id INT NOT NULL, token VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_C4995C677E3C61F9 ON email_verification_token (owner_id)');
         $this->addSql('CREATE TABLE "user" (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, is_verified BOOLEAN NOT NULL, is_based BOOLEAN NOT NULL, first_name VARCHAR(40) DEFAULT NULL, last_name VARCHAR(40) DEFAULT NULL, bio VARCHAR(350) DEFAULT NULL, PRIMARY KEY(id))');
@@ -45,8 +43,6 @@ final class Version20221115144345 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP SEQUENCE email_verification_token_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE "user_id_seq" CASCADE');
         $this->addSql('ALTER TABLE email_verification_token DROP CONSTRAINT FK_C4995C677E3C61F9');
         $this->addSql('DROP TABLE email_verification_token');
         $this->addSql('DROP TABLE "user"');

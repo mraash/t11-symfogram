@@ -66,9 +66,9 @@ class EmailVerificationTokenRepository extends AbstractRepository
     /**
      * @throws EntityNotFoundException
      */
-    public function findOneByToken(string $token): ?EmailVerificationToken
+    public function findOneByToken(string $token): EmailVerificationToken
     {
-        $token = $this->findOneByToken($token);
+        $token = $this->findOneByTokenOrNull($token);
 
         if ($token === null) {
             throw new EntityNotFoundException();
