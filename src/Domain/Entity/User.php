@@ -23,28 +23,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     /**
-     * @var string[]
+     * @var string[] The hierarchy -
+     *  CREATED   - has only email and password fields
+     *  VERIFIED  - email is verified
+     *  BASED     - has firstName, lastName and bio fields
      */
     #[ORM\Column]
-    private array $roles = ['ROLE_USER'];
+    private array $roles = ['ROLE_CREATED'];
 
     /**
      * @var string The hashed password.
      */
     #[ORM\Column]
     private string $password;
-
-    /**
-     * @var bool Is email verified.
-     */
-    #[ORM\Column]
-    private bool $isVerified = false;
-
-    /**
-     * @var bool Is profile information given (full name, bio, avatar) after email verification.
-     */
-    #[ORM\Column]
-    private bool $isBased = false;
 
     #[ORM\Column(length: 40, nullable: true)]
     private ?string $firstName;
@@ -90,8 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_CREATED';
 
         return array_unique($roles);
     }
@@ -147,27 +137,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isVerified(): bool
+    public function hasVerifiedRole(): bool
     {
-        return $this->isVerified;
+        return in_array('ROLE_VERIFIED', $this->roles);
     }
 
-    public function setIsEmailVerified(bool $isVerified): self
+    public function addVerifiedRole(): self
     {
-        $this->isVerified = $isVerified;
-
+        array_push($this->roles, 'ROLE_VERIFIED');
         return $this;
     }
 
-    public function isBased(): bool
+    public function hasBasedRole(): bool
     {
-        return $this->isBased;
+        return in_array('ROLE_BASED', $this->roles);
     }
 
-    public function setIsBased(bool $isBased): self
+    public function addBasedRole(): self
     {
-        $this->isBased = $isBased;
-
+        array_push($this->roles, 'ROLE_BASED');
         return $this;
     }
 

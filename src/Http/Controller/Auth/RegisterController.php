@@ -86,14 +86,14 @@ class RegisterController extends AbstractController
             return $this->redirectToRoute('pages.register');
         }
 
-        if (!$user->isVerified()) {
+        if (!$user->hasVerifiedRole()) {
             $this->addErrorFlash('Something went wrong. Your email is not verified.');
             return $this->redirectToRoute('pages.register');
         }
 
         $userAuthenticator->authenticateUser($user, $authenticator, $request);
 
-        if ($user->isBased()) {
+        if ($user->hasBasedRole()) {
             $this->addInfoFlash('You alerady have verified account.');
             return $this->redirectToRoute('pages.home');
         }
@@ -124,7 +124,7 @@ class RegisterController extends AbstractController
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
         $user->setBio($bio);
-        $user->setIsBased(true);
+        $user->addBasedRole();
 
         $this->userRepository->save($user);
         $this->userRepository->flush();

@@ -72,8 +72,8 @@ class EmailVerifier
 
         $user = $token->getOwner();
 
-        if (!$user->isVerified()) {
-            $user->setIsEmailVerified(true);
+        if (!$user->hasVerifiedRole()) {
+            $user->addVerifiedRole();
             $this->userRepository->flush();
         }
 
