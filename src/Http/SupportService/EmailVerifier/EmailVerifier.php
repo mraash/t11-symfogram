@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Http\SupportService\EmailVerifier;
 
 use App\Domain\Entity\User;
-use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Repository\EmailVerificationTokenRepository;
 use App\Domain\Repository\UserRepository;
-use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -56,7 +54,6 @@ class EmailVerifier
     /**
      * @throws TokenNotProvidedException
      * @throws TokenNotFoundException
-     * @throws EmailIsAlreadyVerifiedException
      */
     public function verifyEmailByRequest(Request $request): User
     {
@@ -67,21 +64,18 @@ class EmailVerifier
             throw new TokenNotProvidedException();
         }
 
-        try {
-            $token = $this->emailVerificationTokenRepository->findOneByToken($tokenStr);
-        }
-        catch (EntityNotFoundException) {
+        $token = $this->emailVerificationTokenRepository->findOneByTokenOrNull($tokenStr);
+
+        if ($token === null) {
             throw new TokenNotFoundException();
         }
 
         $user = $token->getOwner();
 
-        if ($user->isVerified()) {
-            throw new EmailIsAlreadyVerifiedException();
+        if (!$user->isVerified()) {
+            $user->setIsEmailVerified(true);
+            $this->userRepository->flush();
         }
-
-        $user->setIsEmailVerified(true);
-        $this->userRepository->flush();
 
         return $user;
     }

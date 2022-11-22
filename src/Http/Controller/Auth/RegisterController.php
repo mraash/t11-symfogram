@@ -11,7 +11,6 @@ use App\Http\Authenticator\LoginFormAuthenticator;
 use App\Http\Input\Auth\Register\CreateProfileInput;
 use App\Http\Input\Auth\Register\RegisterInput;
 use App\Http\SupportService\EmailVerifier\EmailVerifier;
-use App\Http\SupportService\EmailVerifier\Exceptions\EmailIsAlreadyVerifiedException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -82,16 +81,8 @@ class RegisterController extends AbstractController
         try {
             $user = $this->emailVerifier->verifyEmailByRequest($request);
         }
-        catch (TokenNotProvidedException) {
+        catch (TokenNotProvidedException | TokenNotFoundException) {
             $this->addErrorFlash('Email verification request was invalid.');
-            return $this->redirectToRoute('pages.register');
-        }
-        catch (TokenNotFoundException) {
-            $this->addErrorFlash('Email verification request was invalid.');
-            return $this->redirectToRoute('pages.register');
-        }
-        catch (EmailIsAlreadyVerifiedException) {
-            $this->addInfoFlash('Your email has already been confirmed.');
             return $this->redirectToRoute('pages.register');
         }
 
@@ -101,6 +92,11 @@ class RegisterController extends AbstractController
         }
 
         $userAuthenticator->authenticateUser($user, $authenticator, $request);
+
+        if ($user->isBased()) {
+            $this->addInfoFlash('You alerady have verified account.');
+            return $this->redirectToRoute('pages.home');
+        }
 
         return $this->redirectToRoute('pages.register.create-profile');
     }
