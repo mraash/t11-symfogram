@@ -32,7 +32,7 @@ class EmailVerificationTokenRepository extends AbstractRepository
         $token = new EmailVerificationToken();
 
         $token->setOwner($user);
-        $token->setToken($this->tokenGenerator->generateSimpleToken(88));
+        $token->setToken($this->tokenGenerator->generateUriString(88));
 
         $this->getEntityManager()->persist($token);
 

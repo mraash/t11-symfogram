@@ -7,16 +7,22 @@ namespace Library\Token;
 class RandomStringGenerator
 {
     /**
-     * Generate random string that contains 0-1, a-z, A-Z charactars
+     * Generate random uri friendly string.
      */
-    public function generateSimpleToken(int $length): string
+    public function generateUriString(int $length): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        return $this->generateRandomString($characters, $length);
+    }
+
+    public function generateRandomString(string $allowedCharacters, int $length): string
+    {
         $randomString = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $index = rand(0, strlen($characters) - 1);
-            $randomString .= $characters[$index];
+            $index = rand(0, strlen($allowedCharacters) - 1);
+            $randomString .= $allowedCharacters[$index];
         }
 
         return $randomString;
