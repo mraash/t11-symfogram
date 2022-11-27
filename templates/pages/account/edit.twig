@@ -1,0 +1,24 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}Edit account{% endblock %}
+
+{% block body %}
+    <h2>Edit profile</h2>
+    <form action="{{ path('actions.account.edit') }}" method="post">
+        <div>
+            First name:
+            <input name="first_name" value="{{ app.user.getFirstName() }}">
+        </div>
+        <div>
+            Last name:
+            <input name="last_name" value="{{ app.user.getLastName() }}">
+        </div>
+        <div>
+            Biography:
+            <textarea name="bio">{{ app.user.getBio() }}</textarea>
+        </div>
+        <button type="submit" style="margin-top: 5px;">
+            Save
+        </button>
+    </form>
+{% endblock %}
