@@ -53,7 +53,7 @@ abstract class AbstractInput
      */
     private function pullRawParams(Request $request): array
     {
-        return $request->query->all() + $request->request->all();
+        return $request->query->all() + $request->request->all() + $request->files->all();
     }
 
     /**

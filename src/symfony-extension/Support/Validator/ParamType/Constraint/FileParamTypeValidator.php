@@ -9,36 +9,32 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use SymfonyExtension\Support\Validator\ParamType\AbstractParamTypeValidator;
 
-class IntegerParamTypeValidator extends AbstractParamTypeValidator
+class FileParamTypeValidator extends AbstractParamTypeValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!($constraint instanceof IntegerParamType)) {
-            throw new UnexpectedTypeException($constraint, IntegerParamType::class);
+        if (!($constraint instanceof FileParamType)) {
+            throw new UnexpectedTypeException($constraint, FileParamType::class);
         }
 
         if ($value === null || $value === '') {
             return;
         }
 
-        if (!is_int($value)) {
+        if (!($value instanceof UploadedFile)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 
     protected function canConvert(string|UploadedFile|null $param): bool
     {
-        if (!is_string($param)) {
-            return false;
-        }
-
-        return preg_match('/^\d+$/', $param) === 1;
+        return $param instanceof UploadedFile;
     }
 
-    protected function convert(string|UploadedFile|null $param): int
+    protected function convert(string|UploadedFile|null $param): UploadedFile
     {
-        /** @var string $param */
+        /** @var UploadedFile $param */
     
-        return (int)$param;
+        return $param;
     }
 }

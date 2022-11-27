@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SymfonyExtension\Support\Validator\ParamType;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 interface ParamTypeConverterInterface
 {
     /**
@@ -14,5 +16,5 @@ interface ParamTypeConverterInterface
      *
      * @param ?string $paramValue Parameter value (string) or null if it is not present.
      */
-    public function convertIfPossible(string|null $paramValue): mixed;
+    public function convertIfPossible(string|UploadedFile|null $paramValue): mixed;
 }
