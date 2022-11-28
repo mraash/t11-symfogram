@@ -2,6 +2,7 @@
 
 namespace App\Domain\Repository;
 
+use App\Domain\Entity\Post;
 use App\Domain\Entity\PostImage;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyExtension\Domain\Repository\AbstractRepository;
@@ -21,13 +22,25 @@ class PostImageRepository extends AbstractRepository
         parent::__construct($registry, PostImage::class);
     }
 
-    public function save(PostImage $entity): void
+    public function create(Post $post, string $uri): PostImage
     {
-        $this->getEntityManager()->persist($entity);
+        $image = new PostImage();
+
+        $image->setPost($post);
+        $image->setUri($uri);
+
+        $this->getEntityManager()->persist($image);
+
+        return $image;
     }
 
-    public function remove(PostImage $entity): void
+    public function save(PostImage $image): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->persist($image);
+    }
+
+    public function remove(PostImage $image): void
+    {
+        $this->getEntityManager()->remove($image);
     }
 }

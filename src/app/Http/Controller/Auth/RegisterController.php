@@ -6,6 +6,7 @@ namespace App\Http\Controller\Auth;
 
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
+use App\Domain\Service\UserService;
 use SymfonyExtension\Http\Controller\AbstractController;
 use App\Http\Authenticator\LoginFormAuthenticator;
 use App\Http\Input\Auth\Register\CreateProfileInput;
@@ -13,6 +14,7 @@ use App\Http\Input\Auth\Register\RegisterInput;
 use App\Http\SupportService\EmailVerifier\EmailVerifier;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
+use App\Http\SupportService\FileUploader\FileUploader;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,17 +27,14 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegisterController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
-    private UserRepository $userRepository;
-
     public function __construct(
+        private UserRepository $userRepository,
+        private UserService $userService,
+        private EmailVerifier $emailVerifier,
+        private FileUploader $fileUploader,
         RequestStack $requestStack,
-        EmailVerifier $emailVerifier,
-        UserRepository $userRepository,
     ) {
         parent::__construct($requestStack);
-        $this->emailVerifier = $emailVerifier;
-        $this->userRepository = $userRepository;
     }
 
     #[Route('/register', methods: ['HEAD', 'GET'], name: 'pages.register')]
@@ -58,7 +57,6 @@ class RegisterController extends AbstractController
         $this->userRepository->flush();
 
         $message = (new TemplatedEmail())
-            ->from('manager@t11.symfogram.my')
             ->to($user->getEmail())
             ->subject('Please verify your email.')
             ->htmlTemplate('emails/verify-email.twig')
@@ -119,13 +117,22 @@ class RegisterController extends AbstractController
         $firstName = $input->getFirstNameParam();
         $lastName = $input->getLastNameParam();
         $bio = $input->getBioParam();
+        $avatar = $input->getAvatarParam();
 
         /** @var User */
         $user = $this->getUser();
 
-        $user->setFirstName($firstName);
-        $user->setLastName($lastName);
-        $user->setBio($bio);
+        $user
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
+            ->setBio($bio)
+        ;
+
+        if ($avatar !== null) {
+            $avatarFolder = $this->getParameter('public.images.posts');
+            $avatarUri = $this->fileUploader->upload($avatarFolder, $avatar)->getFullFilename();
+            $this->userService->createAndSetAvatar($user, $avatarUri);
+        }
 
         $user->addBasedRole();
 

@@ -3,6 +3,7 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Post;
+use App\Domain\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyExtension\Domain\Repository\AbstractRepository;
 
@@ -21,13 +22,24 @@ class PostRepository extends AbstractRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function save(Post $entity): void
+    public function create(User $user): Post
     {
-        $this->getEntityManager()->persist($entity);
+        $post = new Post();
+
+        $post->setOwner($user);
+
+        $this->getEntityManager()->persist($post);
+
+        return $post;
     }
 
-    public function remove(Post $entity): void
+    public function save(Post $post): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->persist($post);
+    }
+
+    public function remove(Post $post): void
+    {
+        $this->getEntityManager()->remove($post);
     }
 }
