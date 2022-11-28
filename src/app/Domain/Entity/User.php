@@ -170,6 +170,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function hasVerifiedRole(): bool
+    {
+        return in_array('ROLE_VERIFIED', $this->roles);
+    }
+
+    public function addVerifiedRole(): self
+    {
+        if (!$this->hasVerifiedRole()) {
+            array_push($this->roles, 'ROLE_VERIFIED');
+        }
+
+        return $this;
+    }
+
+    public function hasBasedRole(): bool
+    {
+        return in_array('ROLE_BASED', $this->roles);
+    }
+
+    public function addBasedRole(): self
+    {
+        if (!$this->hasBasedRole()) {
+            array_push($this->roles, 'ROLE_BASED');
+        }
+
+        return $this;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -192,28 +220,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function hasVerifiedRole(): bool
-    {
-        return in_array('ROLE_VERIFIED', $this->roles);
-    }
-
-    public function addVerifiedRole(): self
-    {
-        array_push($this->roles, 'ROLE_VERIFIED');
-        return $this;
-    }
-
-    public function hasBasedRole(): bool
-    {
-        return in_array('ROLE_BASED', $this->roles);
-    }
-
-    public function addBasedRole(): self
-    {
-        array_push($this->roles, 'ROLE_BASED');
-        return $this;
     }
 
     public function getFirstName(): string|null

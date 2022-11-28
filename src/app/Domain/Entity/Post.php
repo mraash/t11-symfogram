@@ -17,7 +17,8 @@ class Post
     private int $id;  /** @phpstan-ignore-line */
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
-    private ?User $owner = null;
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?User $owner;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: PostImage::class)]
     private Collection $images;

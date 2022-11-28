@@ -15,7 +15,8 @@ class PostImage
     private int $id;  /** @phpstn-ignore-line */
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Post $post = null;
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?Post $post;
 
     #[ORM\Column(length: 500)]
     private string $uri;
