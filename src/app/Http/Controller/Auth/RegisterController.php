@@ -130,7 +130,10 @@ class RegisterController extends AbstractController
 
         if ($avatar !== null) {
             $avatarFolder = $this->getParameter('public.images.posts');
-            $avatarUri = $this->fileUploader->upload($avatarFolder, $avatar)->getFullFilename();
+            $avatarPublicFilename = $this->fileUploader->createFilename($avatar, $avatarFolder);
+            $avatarUri = $avatarPublicFilename->getFullUri();
+
+            $this->fileUploader->upload($avatar, $avatarPublicFilename);
             $this->userService->createAndSetAvatar($user, $avatarUri);
         }
 

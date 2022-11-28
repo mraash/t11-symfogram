@@ -10,24 +10,31 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
 {
-    private const FILE_NAME_LENGTH = 40;
-
     public function __construct(
         private RandomStringGenerator $randomStringGenerator
     ) {
     }
 
-    /**
-     * @throws FileException
-     */
-    public function upload(string $path, UploadedFile $file): PublicFilename
+    public function createFilename(UploadedFile $file, string $path, int $filenameBaseLength = 50): PublicFilename
     {
-        $name = $this->randomStringGenerator->generateUriString(self::FILE_NAME_LENGTH);
+        $filenameBase = $this->randomStringGenerator->generateUriString($filenameBaseLength);
         $extension = $file->guessExtension();
 
         $path = $this->addEndSlash($path);
+        $filename = $filenameBase . '.' . $extension;
 
-        $filename = $name . '.' . $extension;
+        $uri = $path . $filename;
+
+        return new PublicFilename($uri);
+    }
+
+    /**
+     * @throws FileException
+     */
+    public function upload(UploadedFile $file, PublicFilename $uri): void
+    {
+        $path = $uri->getPath();
+        $filename = $uri->getFilename();
 
         try {
             $file->move($path, $filename);
@@ -35,8 +42,6 @@ class FileUploader
         catch (FileException $err) {
             throw $err;
         }
-
-        return new PublicFilename($path . $filename);
     }
 
     private function addEndSlash(string $path): string

@@ -41,7 +41,7 @@ class PublicFilename
         return $this->getFileNameBase() . '.' . $this->getExtension();
     }
 
-    public function getFullFilename(): string
+    public function getFullUri(): string
     {
         return $this->getPath() . '/' . $this->getFileName();
     }
