@@ -75,7 +75,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements
             return new RedirectResponse($uri);
         }
 
-        $uri = $this->urlGenerator->generate('pages.home');
+        $uri = $this->urlGenerator->generate('pages.index');
         return new RedirectResponse($uri);
     }
 

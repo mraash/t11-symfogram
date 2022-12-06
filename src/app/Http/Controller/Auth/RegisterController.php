@@ -95,7 +95,7 @@ class RegisterController extends AbstractController
 
         if ($user->hasBasedRole()) {
             $this->addInfoFlash('You alerady have verified account.');
-            return $this->redirectToRoute('pages.home');
+            return $this->redirectToRoute('pages.index');
         }
 
         return $this->redirectToRoute('pages.register.create-profile');
@@ -146,6 +146,6 @@ class RegisterController extends AbstractController
         $newToken = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $tokenStorage->setToken($newToken);
 
-        return $this->redirectToRoute('pages.home');
+        return $this->redirectToRoute('pages.index');
     }
 }

@@ -1,0 +1,23 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+    <h2>Add post</h2>
+    <form action="{{ path('actions.posts.create') }}" method="post" enctype="multipart/form-data">
+        <div>
+            Title:
+            <input type="text" name="title">
+        </div>
+        <div>
+            Images: <br>
+            <input type="file" name="image[]"> <br>
+            <input type="file" name="image[]"> <br>
+            <input type="file" name="image[]"> <br>
+            <input type="file" name="image[]"> <br>
+            <input type="file" name="image[]"> <br>
+        </div>
+
+        <button style="margin-top: 7px">
+            Add
+        </button>
+    </form>
+{% endblock %}

@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Document{% endblock %}</title>
-    </head>
-    <body>
-        {% for message in app.flashes('error') %}
-            <div>Error: {{ message }}</div>
-        {% endfor %}
+{# Layout for non authorized users #}
 
-        {% for message in app.flashes('message') %}
-            <div>Message: {{ message }}</div>
-        {% endfor %}
+{% extends "layouts/skeleton.twig" %}
 
-        {% for message in app.flashes('success') %}
-            <div>Success: {{ message }}</div>
-        {% endfor %}
+{% block body %}
 
-        {% block body %}{% endblock %}
-    </body>
-</html>
+    {% include "includes/alerts.twig" %}
+
+    {% block content %}{% endblock %}
+
+{% endblock %}

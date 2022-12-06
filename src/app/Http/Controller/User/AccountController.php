@@ -58,4 +58,12 @@ class AccountController extends AbstractController
 
         return $this->redirectBack();
     }
+
+    #[Route('account/add-avatar', methods: ['POST'], name: 'actions.account.create-avatar')]
+    public function createAvatar(): RedirectResponse
+    {
+        $this->addErrorFlash('Method is empty');
+
+        return $this->redirectBack();
+    }
 }
