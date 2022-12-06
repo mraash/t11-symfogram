@@ -69,7 +69,7 @@ class RegisterController extends AbstractController
         return $this->redirectBack();
     }
 
-    #[Route('/register/verify-email', methods: ['HEAD', 'GET'], name: 'actions.register.verify-email')]
+    #[Route('/register/verify-email', methods: ['HEAD', 'GET'], name: 'pactions.register.verify-email')]
     public function verifyEmail(
         Request $request,
         UserAuthenticatorInterface $userAuthenticator,

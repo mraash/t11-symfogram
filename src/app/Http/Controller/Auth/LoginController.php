@@ -33,7 +33,7 @@ class LoginController extends AbstractController
         throw new \LogicException('This method should not be executed.');
     }
 
-    #[Route('/logout', methods: ['GET', 'HEAD'], name: 'actions.logout')]
+    #[Route('/logout', methods: ['GET', 'HEAD'], name: 'pactions.logout')]
     public function logout(): void
     {
         throw new \LogicException('This method should not be executed.');

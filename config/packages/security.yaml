@@ -22,7 +22,7 @@ security:
                 lifetime: 604800 # 1 week in seconds
                 always_remember_me: true
             logout:
-                path: actions.logout
+                path: pactions.logout
                 target: pages.login
 
             # activate different ways to authenticate

@@ -6,7 +6,7 @@
     <nav style="margin-bottom: 10px">
         <a href="{{ path('pages.users.index') }}">Users</a> |
         <a href="{{ path('pages.users.single', {'id': app.user.id}) }}">My Account</a> |
-        <a href="{{ path('actions.logout') }}">Logout</a>
+        <a href="{{ path('pactions.logout') }}">Logout</a>
     </nav>
 
     {% include "includes/alerts.twig" %}

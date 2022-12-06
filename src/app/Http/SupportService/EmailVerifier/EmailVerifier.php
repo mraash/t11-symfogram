@@ -39,7 +39,7 @@ class EmailVerifier
         $this->emailVerificationTokenRepository->flush();
 
         $link = $this->urlGenerator->generate(
-            'actions.register.verify-email',
+            'pactions.register.verify-email',
             ['token' => $token->getToken()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
