@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controller\User;
 
-use App\Domain\Entity\Post;
-use App\Domain\Entity\PostImage;
 use App\Domain\Entity\User;
-use App\Domain\Repository\PostImageRepository;
-use App\Domain\Repository\PostRepository;
 use App\Domain\Repository\UserRepository;
+use App\Http\Controller\AbstractController;
 use App\Http\Input\User\Account\EditAccountInput;
 use App\Http\SupportService\FileUploader\FileUploader;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use SymfonyExtension\Http\Controller\AbstractController;
 
 class AccountController extends AbstractController
 {
@@ -44,7 +40,6 @@ class AccountController extends AbstractController
         $lastName = $input->getLastNameParam();
         $bio = $input->getBioParam() ?: null;
 
-        /** @var User */
         $user = $this->getUser();
 
         $user

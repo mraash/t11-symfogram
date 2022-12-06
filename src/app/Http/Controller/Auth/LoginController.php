@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controller\Auth;
 
-use SymfonyExtension\Http\Controller\AbstractController;
+use App\Http\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;

@@ -7,8 +7,8 @@ namespace App\Http\Controller\Auth;
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Service\UserService;
-use SymfonyExtension\Http\Controller\AbstractController;
 use App\Http\Authenticator\LoginFormAuthenticator;
+use App\Http\Controller\AbstractController;
 use App\Http\Input\Auth\Register\CreateProfileInput;
 use App\Http\Input\Auth\Register\RegisterInput;
 use App\Http\SupportService\EmailVerifier\EmailVerifier;
@@ -119,7 +119,6 @@ class RegisterController extends AbstractController
         $bio = $input->getBioParam();
         $avatar = $input->getAvatarParam();
 
-        /** @var User */
         $user = $this->getUser();
 
         $user

@@ -6,7 +6,6 @@ namespace App\Http\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use SymfonyExtension\Http\Controller\AbstractController;
 
 class PostsController extends AbstractController
 {
