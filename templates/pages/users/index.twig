@@ -4,27 +4,39 @@
 
 {% block content %}
     <h2>Users</h2>
-    <form action="{{ path('pages.users.index') }}" method="get">
-        Search:
-        <input type="text" name="name">
-        <button type="submit">s</button>
-    </form>
     <table>
         <tbody>
-            <tr>
-                <td style="
-                    width: 50px;
-                    height: 50px;
-                    background-color: #eee;
-                    border-radius: 50%;
-                ">
-                </td>
-                <td>
-                    <a href="{{ path('pages.users.single', {id: 999}) }}">
-                        Johan
-                    </a>
-                </td>
-            </tr>
+            {% for user in users %}
+                <tr>
+                    <td style="
+                        width: 50px;
+                        height: 50px;
+                        border: 1px solid #666;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    ">
+                        {% if user.getAvatar() %}
+                            <image
+                                style="
+                                    max-width: 100%;
+                                    max-heigth: 100%;
+                                "
+                                src="{{ user.getAvatar().getUri() }}"
+                            >
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('pages.users.single', {id: user.id}) }}">
+                            {{ user.getFirstName() }} {{ user.getLastName() }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
