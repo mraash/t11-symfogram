@@ -14,6 +14,8 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
  * @method Post|null findOneBy(array $criteria, array $orderBy = null)
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Post|null findByIdOrNull(int $id)
+ * @method Post      findById(int $id)
  */
 class PostRepository extends AbstractRepository
 {

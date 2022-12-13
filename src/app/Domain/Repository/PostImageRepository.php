@@ -14,6 +14,8 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
  * @method PostImage|null findOneBy(array $criteria, array $orderBy = null)
  * @method PostImage[]    findAll()
  * @method PostImage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PostImage|null findByIdOrNull(int $id)
+ * @method PostImage      findById(int $id)
  */
 class PostImageRepository extends AbstractRepository
 {

@@ -8,6 +8,7 @@ use App\Domain\Repository\UserRepository;
 use App\Http\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
@@ -32,12 +33,17 @@ class UserController extends AbstractController
     #[Route('/users/{id<\d+>}', methods: ['HEAD', 'GET'], name: 'pages.users.single')]
     public function showSingle(int $id): Response
     {
-        $user = $this->getUser();
+        $user = $this->userRepository->findByIdOrNull($id);
 
-        $isSelf = $id === $user->getId();
+        if ($user === null) {
+            throw new NotFoundHttpException();
+        }
+
+        $isSelf = $id === $this->getUser()->getId();
 
         return $this->render('pages/users/single.twig', [
             'is_self' => $isSelf,
+            'user' => $user,
         ]);
     }
 }

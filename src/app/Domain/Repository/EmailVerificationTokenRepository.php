@@ -16,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method EmailVerificationToken|null findOneBy(array $criteria, array $orderBy = null)
  * @method EmailVerificationToken[]    findAll()
  * @method EmailVerificationToken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method EmailVerificationToken|null findByIdOrNull(int $id)
+ * @method EmailVerificationToken      findById(int $id)
  */
 class EmailVerificationTokenRepository extends AbstractRepository
 {

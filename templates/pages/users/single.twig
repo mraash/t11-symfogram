@@ -6,14 +6,30 @@
     <div style="display: flex">
         <div
             style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 width: 50px;
                 height: 50px;
-                background-color: #eee;
+                border: 1px solid #444;
                 border-radius: 50%;
+                overflow: hidden
             "
-        ></div>
+        >
+            {% if user.getAvatar() is not null %}
+                <image
+                    src="{{ asset(user.getAvatar().getUri()) }}"
+                    style="
+                        max-width: 100%;
+                        max-height: 100%;
+                    "
+                >
+            {% else %}
+                Empty
+            {% endif %}
+        </div>
         <h2>
-            Johan
+            {{ user.getFirstName() }} {{ user.getLastName() }}
         </h2>
     </div>
 
@@ -25,65 +41,50 @@
     {% endif %}
 
     <div>
-        <div>
-            <div>Title</div>
-            <div style="
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                width: 405px;
-            ">
+        {% for post in user.getPosts() %}
+            <div>
+                {% if post.getTitle() is not null %}
+                    <div>{{ post.getTitle() }}</div>
+                {% endif %}
+
                 <div style="
-                    margin-bottom: 5px;
-                    width: 200px;
-                    height: 200px;
-                    background-color: #eee;
-                "></div>
-                <div style="
-                    margin-bottom: 5px;
-                    width: 200px;
-                    height: 200px;
-                    background-color: #eee;
-                "></div>
-                <div style="
-                    margin-bottom: 5px;
-                    width: 200px;
-                    height: 200px;
-                    background-color: #eee;
-                "></div>
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    width: 405px;
+                ">
+                    {% for image in post.getImages() %}
+                        <div style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin-bottom: 5px;
+                            width: 200px;
+                            height: 200px;
+                            border: 1px solid #444;
+                            border-radius: 5px;
+                            overflow: hidden;
+                        ">
+                            <image
+                                src="{{ asset(image.getUri()) }}"
+                                style="
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                "
+                            >
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <hr style="
-            margin-left: 0;
-            width: 400px;
-        ">
-        <div>
-            <div>Title</div>
-            <div style="
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                width: 405px;
-            ">
-                <div style="
-                    margin-bottom: 5px;
-                    width: 200px;
-                    height: 200px;
-                    background-color: #eee;
-                "></div>
-                <div style="
-                    margin-bottom: 5px;
-                    width: 200px;
-                    height: 200px;
-                    background-color: #eee;
-                "></div>
-                <div style="
-                    margin-bottom: 5px;
-                    width: 200px;
-                    height: 200px;
-                    background-color: #eee;
-                "></div>
-            </div>
-        </div>
+
+            {% if not loop.last %}
+                <hr style="
+                    margin-left: 0;
+                    width: 400px;
+                ">
+            {% endif %}
+        {% else %}
+            No posts here :(
+        {% endfor %}
     </div>
 {% endblock %}
