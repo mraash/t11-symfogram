@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controller\User;
 
 use App\Domain\Repository\UserRepository;
+use App\Domain\Service\UserService;
 use App\Http\Controller\AbstractController;
+use App\Http\Input\User\Account\CreateAvatarInput;
 use App\Http\Input\User\Account\EditAccountInput;
 use App\Http\SupportService\FileUploader\FileUploader;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +19,8 @@ class AccountController extends AbstractController
 {
     public function __construct(
         private UserRepository $userRepository,
-        private FileUploader $fileUploader, /** @phpstan-ignore-line */
+        private UserService $userService,
+        private FileUploader $fileUploader,
         RequestStack $requestStack
     ) {
         parent::__construct($requestStack);
@@ -55,9 +58,24 @@ class AccountController extends AbstractController
     }
 
     #[Route('account/add-avatar', methods: ['POST'], name: 'actions.account.create-avatar')]
-    public function createAvatar(): RedirectResponse
+    public function createAvatar(CreateAvatarInput $input): RedirectResponse
     {
-        $this->addErrorFlash('Method is empty');
+        if (!$this->validateInput($input)) {
+            return $this->redirectBack();
+        }
+
+        $avatar = $input->getAvatar();
+
+        /** @var string */
+        $imagesFolder = $this->getParameter('public.images.posts');
+
+        $avatarUriFilename = $this->fileUploader->createFilename($avatar, $imagesFolder);
+
+        $avatarUri = $avatarUriFilename->getFullUri();
+        $user = $this->getUser();
+
+        $this->fileUploader->upload($avatar, $avatarUriFilename);
+        $this->userService->createAndSetAvatar($user, $avatarUri);
 
         return $this->redirectBack();
     }
