@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controller\User;
+namespace App\Http\Controller;
 
 use App\Domain\Repository\UserRepository;
 use App\Domain\Service\UserService;
 use App\Http\Controller\AbstractController;
-use App\Http\Input\User\Account\CreateAvatarInput;
-use App\Http\Input\User\Account\EditAccountInput;
+use App\Http\Input\Account\CreateAvatarInput;
+use App\Http\Input\Account\EditAccountInput;
 use App\Http\SupportService\FileUploader\FileUploader;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Input\User\Account;
+namespace App\Http\Input\Account;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\Length;

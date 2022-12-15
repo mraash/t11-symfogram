@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controller\User;
+namespace App\Http\Controller;
 
 use App\Domain\Repository\UserRepository;
 use App\Http\Controller\AbstractController;
