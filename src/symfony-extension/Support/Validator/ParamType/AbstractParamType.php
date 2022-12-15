@@ -12,7 +12,7 @@ abstract class AbstractParamType extends Constraint
     /**
      * Return class that converts paramter value.
      *
-     * @phpstan-return class-string<ParamTypeConverterInterface> 
+     * @phpstan-return class-string<ParamTypeConverterInterface>
      */
     public function convertedBy(): string
     {

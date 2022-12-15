@@ -38,7 +38,7 @@ class IntegerParamTypeValidator extends AbstractParamTypeValidator
     protected function convert(string|UploadedFile|null $param): int
     {
         /** @var string $param */
-    
+
         return (int)$param;
     }
 }

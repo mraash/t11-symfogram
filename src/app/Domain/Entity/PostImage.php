@@ -4,7 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Repository\Domain\Entity\PostImageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use \App\Domain\Entity\Post;
+use App\Domain\Entity\Post;
 
 #[ORM\Entity(repositoryClass: PostImageRepository::class)]
 class PostImage

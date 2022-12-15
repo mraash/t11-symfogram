@@ -34,7 +34,7 @@ class FileParamTypeValidator extends AbstractParamTypeValidator
     protected function convert(string|UploadedFile|null $param): UploadedFile
     {
         /** @var UploadedFile $param */
-    
+
         return $param;
     }
 }

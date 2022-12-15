@@ -22,7 +22,7 @@ class ParamTypeConverterFactory
         }
 
         /** @var ParamTypeConverterInterface */
-        $converter = new $className; // ???  O_o
+        $converter = new $className(); // ???  O_o
 
         return $converter;
     }

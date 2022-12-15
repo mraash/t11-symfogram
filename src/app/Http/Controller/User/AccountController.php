@@ -31,7 +31,8 @@ class AccountController extends AbstractController
     }
 
     #[Route('account/edit', methods: ['POST'], name: 'actions.account.edit')]
-    public function edit(EditAccountInput $input): RedirectResponse {
+    public function edit(EditAccountInput $input): RedirectResponse
+    {
         if (!$this->validateInput($input)) {
             return $this->redirectBack();
         }

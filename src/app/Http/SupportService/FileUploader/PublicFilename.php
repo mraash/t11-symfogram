@@ -30,7 +30,7 @@ class PublicFilename
     {
         return $this->name;
     }
-    
+
     public function getExtension(): string
     {
         return $this->extension;

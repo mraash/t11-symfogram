@@ -6,7 +6,7 @@ use App\Domain\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use \App\Domain\Entity\User;
+use App\Domain\Entity\User;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post

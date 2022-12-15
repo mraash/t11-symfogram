@@ -15,7 +15,7 @@ class UserService
         private UserRepository $userRepository,
         private PostRepository $postRepository,
         private PostImageRepository $postImageRepository
-    ) {   
+    ) {
     }
 
     public function createAndSetAvatar(User $user, string $avatarUri): void
