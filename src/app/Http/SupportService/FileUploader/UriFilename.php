@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\SupportService\FileUploader;
 
-class PublicFilename
+class UriFilename
 {
     private string $path;
     private string $name;

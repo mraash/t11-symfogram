@@ -15,7 +15,7 @@ class FileUploader
     ) {
     }
 
-    public function createFilename(UploadedFile $file, string $path, int $filenameBaseLength = 50): PublicFilename
+    public function createFilename(UploadedFile $file, string $path, int $filenameBaseLength = 50): UriFilename
     {
         $filenameBase = $this->randomStringGenerator->generateUriString($filenameBaseLength);
         $extension = $file->guessExtension();
@@ -25,13 +25,13 @@ class FileUploader
 
         $uri = $path . $filename;
 
-        return new PublicFilename($uri);
+        return new UriFilename($uri);
     }
 
     /**
      * @throws FileException
      */
-    public function upload(UploadedFile $file, PublicFilename $uri): void
+    public function upload(UploadedFile $file, UriFilename $uri): void
     {
         $path = $uri->getPath();
         $filename = $uri->getFilename();
