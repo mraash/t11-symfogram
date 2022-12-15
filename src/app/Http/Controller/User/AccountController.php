@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controller\User;
 
-use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use App\Http\Controller\AbstractController;
 use App\Http\Input\User\Account\EditAccountInput;
@@ -18,7 +17,7 @@ class AccountController extends AbstractController
 {
     public function __construct(
         private UserRepository $userRepository,
-        private FileUploader $fileUploader,
+        private FileUploader $fileUploader, /** @phpstan-ignore-line */
         RequestStack $requestStack
     ) {
         parent::__construct($requestStack);

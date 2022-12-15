@@ -20,6 +20,7 @@ class Post
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?User $owner;
 
+    /** @var Collection<int,PostImage> */
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: PostImage::class)]
     private Collection $images;
 

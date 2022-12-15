@@ -17,7 +17,8 @@ class PublicFilename
         $this->path = implode('/', $folders);
 
         $splitedFilename = explode('.', $filename);
-        $this->extension = array_pop($splitedFilename);
+
+        $this->extension = count($splitedFilename) > 1 ? array_pop($splitedFilename) : '';
         $this->name = implode('.', $splitedFilename);
     }
 

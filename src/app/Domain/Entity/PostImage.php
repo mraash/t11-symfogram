@@ -2,9 +2,8 @@
 
 namespace App\Domain\Entity;
 
-use App\Repository\Domain\Entity\PostImageRepository;
+use App\Domain\Repository\PostImageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Entity\Post;
 
 #[ORM\Entity(repositoryClass: PostImageRepository::class)]
 class PostImage
@@ -12,7 +11,7 @@ class PostImage
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;  /** @phpstn-ignore-line */
+    private int $id;  /** @phpstan-ignore-line */
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
