@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SymfonyExtension\Support\Validator;
+namespace SymfonyExtension\Validator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
-class EntityExistsValidator extends ConstraintValidator
+class EntityMissingValidator extends ConstraintValidator
 {
     private EntityManagerInterface $entityManager;
 
@@ -21,8 +21,8 @@ class EntityExistsValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!($constraint instanceof EntityExists)) {
-            throw new UnexpectedTypeException($constraint, EntityExists::class);
+        if (!($constraint instanceof EntityMissing)) {
+            throw new UnexpectedTypeException($constraint, EntityMissing::class);
         }
 
         $entityClass = $constraint->entityClass;
@@ -42,7 +42,7 @@ class EntityExistsValidator extends ConstraintValidator
 
         $entity = $repository->findOneBy([$field => $value]);
 
-        if ($entity === null) {
+        if ($entity !== null) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

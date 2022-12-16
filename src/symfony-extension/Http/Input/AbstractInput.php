@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use SymfonyExtension\Support\Validator\ParamType\AbstractParamType;
-use SymfonyExtension\Support\Validator\ParamType\ParamTypeConverterFactory;
+use SymfonyExtension\Validator\ParamType\AbstractParamType;
+use SymfonyExtension\Validator\ParamType\ParamTypeConverterFactory;
 
 abstract class AbstractInput
 {

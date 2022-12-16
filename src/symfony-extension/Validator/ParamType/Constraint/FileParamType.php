@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SymfonyExtension\Support\Validator\ParamType\Constraint;
+namespace SymfonyExtension\Validator\ParamType\Constraint;
 
-use SymfonyExtension\Support\Validator\ParamType\AbstractParamType;
+use SymfonyExtension\Validator\ParamType\AbstractParamType;
 
 class FileParamType extends AbstractParamType
 {

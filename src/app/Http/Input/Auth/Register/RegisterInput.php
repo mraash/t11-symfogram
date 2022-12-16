@@ -6,9 +6,9 @@ namespace App\Http\Input\Auth\Register;
 
 use App\Domain\Entity\User;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
-use SymfonyExtension\Support\Validator\EntityExists;
-use SymfonyExtension\Support\Validator\EntityMissing;
-use SymfonyExtension\Support\Validator\NotEmpty;
+use SymfonyExtension\Validator\EntityExists;
+use SymfonyExtension\Validator\EntityMissing;
+use SymfonyExtension\Validator\NotEmpty;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 

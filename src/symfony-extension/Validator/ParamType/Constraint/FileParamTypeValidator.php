@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SymfonyExtension\Support\Validator\ParamType\Constraint;
+namespace SymfonyExtension\Validator\ParamType\Constraint;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use SymfonyExtension\Support\Validator\ParamType\AbstractParamTypeValidator;
+use SymfonyExtension\Validator\ParamType\AbstractParamTypeValidator;
 
 class FileParamTypeValidator extends AbstractParamTypeValidator
 {

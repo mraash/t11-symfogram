@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SymfonyExtension\Support\Validator;
+namespace SymfonyExtension\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-class EntityMissing extends Constraint
+class EntityExists extends Constraint
 {
-    public string $message = 'This value is taken.';
+    public string $message = 'There is no entry with this value.';
     public string $field;
     /** @phpstan-var class-string */
     public string $entityClass;

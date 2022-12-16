@@ -6,10 +6,10 @@ namespace App\Http\Input\Auth\Register;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
-use SymfonyExtension\Support\Validator\NotEmpty;
+use SymfonyExtension\Validator\NotEmpty;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Optional;
-use SymfonyExtension\Support\Validator\ParamType\Constraint\FileParamType;
+use SymfonyExtension\Validator\ParamType\Constraint\FileParamType;
 
 class CreateProfileInput extends AbstractBaseInput
 {

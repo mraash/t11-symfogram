@@ -6,7 +6,7 @@ namespace App\Http\Input\Account;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
-use SymfonyExtension\Support\Validator\ParamType\Constraint\FileParamType;
+use SymfonyExtension\Validator\ParamType\Constraint\FileParamType;
 
 class CreateAvatarInput extends AbstractBaseInput
 {

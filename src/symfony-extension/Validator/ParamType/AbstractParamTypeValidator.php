@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SymfonyExtension\Support\Validator\ParamType;
+namespace SymfonyExtension\Validator\ParamType;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\ConstraintValidator;

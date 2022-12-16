@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SymfonyExtension\Support\Validator\ParamType;
+namespace SymfonyExtension\Validator\ParamType;
 
 use Symfony\Component\Validator\Constraint;
-use SymfonyExtension\Support\Validator\ParamType\ParamTypeConverterInterface;
+use SymfonyExtension\Validator\ParamType\ParamTypeConverterInterface;
 
 abstract class AbstractParamType extends Constraint
 {

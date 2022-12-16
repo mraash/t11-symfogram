@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Optional;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
-use SymfonyExtension\Support\Validator\NotEmpty;
-use SymfonyExtension\Support\Validator\ParamType\Constraint\FileParamType;
+use SymfonyExtension\Validator\NotEmpty;
+use SymfonyExtension\Validator\ParamType\Constraint\FileParamType;
 
 class EditAccountInput extends AbstractBaseInput
 {
