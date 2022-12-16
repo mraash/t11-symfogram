@@ -64,7 +64,7 @@ class AccountController extends AbstractController
             return $this->redirectBack();
         }
 
-        $avatar = $input->getAvatar();
+        $avatar = $input->getAvatarParam();
 
         /** @var string */
         $imagesFolder = $this->getParameter('public.images.posts');

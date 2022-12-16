@@ -17,7 +17,7 @@ class CreateAvatarInput extends AbstractBaseInput
         ];
     }
 
-    public function getAvatar(): UploadedFile
+    public function getAvatarParam(): UploadedFile
     {
         /** @var UploadedFile */
         return $this->param('avatar');
