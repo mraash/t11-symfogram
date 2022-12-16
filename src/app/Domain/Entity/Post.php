@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Entity\User;
+use Library\Exceptions\NullPropertyException;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -37,9 +38,19 @@ class Post
         return $this->id;
     }
 
-    public function getOwner(): ?User
+    public function getOwnerOrNull(): ?User
     {
         return $this->owner;
+    }
+
+    public function hasOwner(): bool
+    {
+        return $this->getOwnerOrNull() !== null;
+    }
+
+    public function getOwner(): User
+    {
+        return $this->getOwnerOrNull() ?? throw new NullPropertyException();
     }
 
     public function setOwner(?User $owner): self
@@ -71,7 +82,7 @@ class Post
     {
         if ($this->images->removeElement($image)) {
             // set the owning side to null (unless already changed)
-            if ($image->getPost() === $this) {
+            if ($image->getPostOrNull() === $this) {
                 $image->setPost(null);
             }
         }
@@ -79,9 +90,19 @@ class Post
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitleOrNull(): ?string
     {
         return $this->title;
+    }
+
+    public function hasTitle(): bool
+    {
+        return $this->getTitleOrNull() !== null;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->getTitleOrNull() ?? throw new NullPropertyException();
     }
 
     public function setTitle(?string $title): self

@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Repository\PostImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Library\Exceptions\NullPropertyException;
 
 #[ORM\Entity(repositoryClass: PostImageRepository::class)]
 class PostImage
@@ -25,9 +26,19 @@ class PostImage
         return $this->id;
     }
 
-    public function getPost(): ?Post
+    public function getPostOrNull(): ?Post
     {
         return $this->post;
+    }
+
+    public function hasPost(): bool
+    {
+        return $this->getPostOrNull() !== null;
+    }
+
+    public function getPost(): Post
+    {
+        return $this->getPostOrNull() ?? throw new NullPropertyException();
     }
 
     public function setPost(?Post $post): self

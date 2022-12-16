@@ -6,6 +6,7 @@ use App\Domain\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Library\Exceptions\NullPropertyException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -83,9 +84,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAvatar(): ?PostImage
+    public function getAvatarOrNull(): ?PostImage
     {
         return $this->avatar;
+    }
+
+    public function hasAvatar(): bool
+    {
+        return $this->getAvatarOrNull() !== null;
+    }
+
+    public function getAvatar(): PostImage
+    {
+        return $this->getAvatarOrNull() ?? throw new NullPropertyException();
     }
 
     public function setAvatar(?PostImage $avatar): self
@@ -117,7 +128,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($post->getOwner() === $this) {
+            if ($post->getOwnerOrNull() === $this) {
                 $post->setOwner(null);
             }
         }

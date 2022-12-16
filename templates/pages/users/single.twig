@@ -16,7 +16,7 @@
                 overflow: hidden
             "
         >
-            {% if user.getAvatar() is not null %}
+            {% if user.hasAvatar() is not null %}
                 <image
                     src="{{ asset(user.getAvatar().getUri()) }}"
                     style="
@@ -49,7 +49,7 @@
                     margin-bottom: 20px;
                     width: 600px;
                 ">
-                {% if post.getTitle() is not null %}
+                {% if post.hasTitle() %}
                     <div>{{ post.getTitle() }}</div>
                 {% endif %}
 
