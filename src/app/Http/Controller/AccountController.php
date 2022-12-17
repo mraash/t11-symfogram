@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
-use App\Domain\Repository\UserRepository;
 use App\Domain\Service\UserService;
 use App\Http\Controller\AbstractController;
 use App\Http\Input\Account\CreateAvatarInput;
@@ -18,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class AccountController extends AbstractController
 {
     public function __construct(
-        private UserRepository $userRepository,
         private UserService $userService,
         private FileUploader $fileUploader,
         RequestStack $requestStack
@@ -51,8 +49,7 @@ class AccountController extends AbstractController
             ->setBio($bio)
         ;
 
-        $this->userRepository->save($user);
-        $this->userRepository->flush();
+        $this->userService->save($user);
 
         return $this->redirectBack();
     }

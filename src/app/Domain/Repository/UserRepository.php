@@ -6,9 +6,6 @@ use App\Domain\Entity\User;
 use SymfonyExtension\Domain\Exception\EntityNotFoundException;
 use SymfonyExtension\Domain\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @extends AbstractRepository<User>
@@ -18,40 +15,34 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method User|null findByIdOrNull(int $id)
- * @method User      findById(int $id)
  */
 class UserRepository extends AbstractRepository
 {
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(ManagerRegistry $registry, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-        $this->passwordHasher = $passwordHasher;
     }
 
-    public function create(string $email, string $plainPassword): User
+    public function create(string $email, string $password): User
     {
         $user = new User();
 
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
-
         $user->setEmail($email);
-        $user->setPassword($hashedPassword);
+        $user->setPassword($password);
 
         $this->getEntityManager()->persist($user);
 
         return $user;
     }
 
-    public function save(User $entity): void
+    public function save(User $user): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($user);
     }
 
-    public function remove(User $entity): void
+    public function remove(User $user): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove($user);
     }
 
     public function findOneByEmailOrNull(string $email): ?User
@@ -63,16 +54,5 @@ class UserRepository extends AbstractRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
-
-    public function findOneByEmail(string $email): User
-    {
-        $user = $this->findOneByEmailOrNull($email);
-
-        if ($user === null) {
-            throw new EntityNotFoundException();
-        }
-
-        return $user;
     }
 }

@@ -15,7 +15,6 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
  * @method PostImage[]    findAll()
  * @method PostImage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method PostImage|null findByIdOrNull(int $id)
- * @method PostImage      findById(int $id)
  */
 class PostImageRepository extends AbstractRepository
 {
@@ -31,7 +30,7 @@ class PostImageRepository extends AbstractRepository
         $image->setPost($post);
         $image->setUri($uri);
 
-        $this->getEntityManager()->persist($image);
+        $this->save($image);
 
         return $image;
     }

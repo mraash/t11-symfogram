@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controller\Auth;
 
 use App\Domain\Entity\User;
-use App\Domain\Repository\UserRepository;
 use App\Domain\Service\UserService;
 use App\Http\Authenticator\LoginFormAuthenticator;
 use App\Http\Controller\AbstractController;
@@ -28,7 +27,6 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class RegisterController extends AbstractController
 {
     public function __construct(
-        private UserRepository $userRepository,
         private UserService $userService,
         private EmailVerifier $emailVerifier,
         private FileUploader $fileUploader,
@@ -53,8 +51,7 @@ class RegisterController extends AbstractController
         $email = $input->getEmailParam();
         $password = $input->getPasswordParam();
 
-        $user = $this->userRepository->create($email, $password);
-        $this->userRepository->flush();
+        $user = $this->userService->create($email, $password);
 
         $message = (new TemplatedEmail())
             ->to($user->getEmail())
@@ -139,8 +136,7 @@ class RegisterController extends AbstractController
 
         $user->addBasedRole();
 
-        $this->userRepository->save($user);
-        $this->userRepository->flush();
+        $this->userService->save($user);
 
         // Create new token because user has new role
         $newToken = new UsernamePasswordToken($user, 'main', $user->getRoles());

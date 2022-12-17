@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace SymfonyExtension\Validator;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Library\Exceptions\UnexpectedTypeException as LibraryUnexpectedTypeException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use SymfonyExtension\Domain\Repository\AbstractRepository;
 
 class EntityMissingValidator extends ConstraintValidator
 {
@@ -39,6 +41,10 @@ class EntityMissingValidator extends ConstraintValidator
         }
 
         $repository = $this->entityManager->getRepository($entityClass);
+
+        if (!($repository instanceof AbstractRepository)) {
+            throw new LibraryUnexpectedTypeException();
+        }
 
         $entity = $repository->findOneBy([$field => $value]);
 

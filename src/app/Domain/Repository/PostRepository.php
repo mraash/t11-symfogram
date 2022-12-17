@@ -15,7 +15,6 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method Post|null findByIdOrNull(int $id)
- * @method Post      findById(int $id)
  */
 class PostRepository extends AbstractRepository
 {
@@ -30,7 +29,7 @@ class PostRepository extends AbstractRepository
 
         $post->setOwner($user);
 
-        $this->getEntityManager()->persist($post);
+        $this->save($post);
 
         return $post;
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\SupportService\EmailVerifier;
 
 use App\Domain\Entity\User;
-use App\Domain\Repository\EmailVerificationTokenRepository;
-use App\Domain\Repository\UserRepository;
+use App\Domain\Service\EmailVerificationTokenService;
+use App\Domain\Service\UserService;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotFoundException;
 use App\Http\SupportService\EmailVerifier\Exceptions\TokenNotProvidedException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -16,27 +16,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EmailVerifier
 {
-    private MailerInterface $mailer;
-    private UrlGeneratorInterface $urlGenerator;
-    private UserRepository $userRepository;
-    private EmailVerificationTokenRepository $emailVerificationTokenRepository;
-
     public function __construct(
-        MailerInterface $mailer,
-        UrlGeneratorInterface $urlGenerator,
-        UserRepository $userRepository,
-        EmailVerificationTokenRepository $emailVerificationTokenRepository
+        private MailerInterface $mailer,
+        private UrlGeneratorInterface $urlGenerator,
+        private UserService $userService,
+        private EmailVerificationTokenService $emailVerificationTokenService
     ) {
-        $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
-        $this->userRepository = $userRepository;
-        $this->emailVerificationTokenRepository = $emailVerificationTokenRepository;
     }
 
     public function createTokenAndSendEmail(User $user, TemplatedEmail $email): void
     {
-        $token = $this->emailVerificationTokenRepository->create($user);
-        $this->emailVerificationTokenRepository->flush();
+        $token = $this->emailVerificationTokenService->create($user);
 
         $link = $this->urlGenerator->generate(
             'pactions.register.verify-email',
@@ -64,7 +54,7 @@ class EmailVerifier
             throw new TokenNotProvidedException();
         }
 
-        $token = $this->emailVerificationTokenRepository->findOneByTokenOrNull($tokenStr);
+        $token = $this->emailVerificationTokenService->findOneByTokenOrNull($tokenStr);
 
         if ($token === null) {
             throw new TokenNotFoundException();
@@ -74,7 +64,7 @@ class EmailVerifier
 
         if (!$user->hasVerifiedRole()) {
             $user->addVerifiedRole();
-            $this->userRepository->flush();
+            $this->userService->save($user);
         }
 
         return $user;

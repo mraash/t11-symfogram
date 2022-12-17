@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
-use App\Domain\Repository\PostImageRepository;
-use App\Domain\Repository\PostRepository;
+use App\Domain\Service\PostImageService;
+use App\Domain\Service\PostService;
 use App\Http\Input\Post\CreatePostInput;
 use App\Http\SupportService\FileUploader\FileUploader;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostsController extends AbstractController
 {
     public function __construct(
-        private PostRepository $postRepository,
-        private PostImageRepository $postImageRepository,
+        private PostService $postService,
+        private PostImageService $postImageService,
         private FileUploader $fileUploader,
         RequestStack $requestStack
     ) {
@@ -40,8 +40,8 @@ class PostsController extends AbstractController
         $images = $input->getImageParams();
 
         $user = $this->getUser();
-        $post = $this->postRepository->create($user);
 
+        $post = $this->postService->create($user);
         $post->setTitle($title);
 
         /** @var string */
@@ -52,12 +52,12 @@ class PostsController extends AbstractController
             $uri = $uriFilename->getFullUri();
 
             $this->fileUploader->upload($uploadedImage, $uriFilename);
-            $postImage = $this->postImageRepository->create($post, $uri);
+            $postImage = $this->postImageService->create($post, $uri);
 
             $post->addImage($postImage);
         }
 
-        $this->postImageRepository->flush();
+        $this->postService->save($post);
 
         return $this->redirectBack();
     }

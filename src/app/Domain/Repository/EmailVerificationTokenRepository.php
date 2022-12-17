@@ -6,7 +6,6 @@ use App\Domain\Entity\EmailVerificationToken;
 use App\Domain\Entity\User;
 use SymfonyExtension\Domain\Exception\EntityNotFoundException;
 use SymfonyExtension\Domain\Repository\AbstractRepository;
-use Library\Token\RandomStringGenerator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,26 +16,22 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method EmailVerificationToken[]    findAll()
  * @method EmailVerificationToken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method EmailVerificationToken|null findByIdOrNull(int $id)
- * @method EmailVerificationToken      findById(int $id)
  */
 class EmailVerificationTokenRepository extends AbstractRepository
 {
-    private RandomStringGenerator $tokenGenerator;
-
-    public function __construct(ManagerRegistry $registry, RandomStringGenerator $tokenGenerator)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, EmailVerificationToken::class);
-        $this->tokenGenerator = $tokenGenerator;
     }
 
-    public function create(User $user): EmailVerificationToken
+    public function create(User $user, string $tokenString): EmailVerificationToken
     {
         $token = new EmailVerificationToken();
 
         $token->setOwner($user);
-        $token->setToken($this->tokenGenerator->generateUriString(88));
+        $token->setToken($tokenString);
 
-        $this->getEntityManager()->persist($token);
+        $this->save($token);
 
         return $token;
     }
@@ -51,9 +46,6 @@ class EmailVerificationTokenRepository extends AbstractRepository
         $this->getEntityManager()->remove($entity);
     }
 
-    /**
-     * @throws EntityNotFoundException
-     */
     public function findOneByTokenOrNull(string $token): ?EmailVerificationToken
     {
         /** @var ?EmailVerificationToken */
@@ -63,19 +55,5 @@ class EmailVerificationTokenRepository extends AbstractRepository
            ->getQuery()
            ->getOneOrNullResult()
         ;
-    }
-
-    /**
-     * @throws EntityNotFoundException
-     */
-    public function findOneByToken(string $token): EmailVerificationToken
-    {
-        $token = $this->findOneByTokenOrNull($token);
-
-        if ($token === null) {
-            throw new EntityNotFoundException();
-        }
-
-        return $token;
     }
 }
