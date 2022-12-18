@@ -10,11 +10,13 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
 /**
  * @extends AbstractRepository<PostImage>
  *
- * @method PostImage|null find($id, $lockMode = null, $lockVersion = null)
- * @method PostImage|null findOneBy(array $criteria, array $orderBy = null)
+ * @method void save(PostImage $image)
+ * @method void remove(PostImage $image)
+ *
+ * @method PostImage|null findByIdOrNull(int $id)
+ * @method PostImage|null findOneByOrNull(array $criteria)
  * @method PostImage[]    findAll()
  * @method PostImage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method PostImage|null findByIdOrNull(int $id)
  */
 class PostImageRepository extends AbstractRepository
 {
@@ -33,15 +35,5 @@ class PostImageRepository extends AbstractRepository
         $this->save($image);
 
         return $image;
-    }
-
-    public function save(PostImage $image): void
-    {
-        $this->getEntityManager()->persist($image);
-    }
-
-    public function remove(PostImage $image): void
-    {
-        $this->getEntityManager()->remove($image);
     }
 }

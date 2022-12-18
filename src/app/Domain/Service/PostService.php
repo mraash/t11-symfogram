@@ -7,44 +7,40 @@ namespace App\Domain\Service;
 use App\Domain\Entity\Post;
 use App\Domain\Entity\User;
 use App\Domain\Repository\PostRepository;
-use SymfonyExtension\Domain\Exception\EntityNotFoundException;
+use SymfonyExtension\Domain\Service\AbstractService;
 
-class PostService
+/**
+ * @extends AbstractService<Post>
+ *
+ * @method void save(Post $post)
+ * @method void remove(Post $post)
+ *
+ * @method Post|null findByIdOrNull(int $id)
+ * @method Post      findByIdOr(int $id)
+ * @method Post|null findOneByOrNull(array $criteria)
+ * @method Post      findOneBy(array $criteria)
+ * @method Post[]    findAll()
+ * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class PostService extends AbstractService
 {
     public function __construct(
-        private PostRepository $repository
+        PostRepository $repository
     ) {
+        parent::__construct($repository);
     }
 
     public function create(User $user): Post
     {
-        $post = $this->repository->create($user);
-        $this->repository->flush();
+        $post = $this->getRepository()->create($user);
+        $this->getRepository()->flush();
 
         return $post;
     }
 
-    public function save(Post $post): void
+    protected function getRepository(): PostRepository
     {
-        $this->repository->save($post);
-        $this->repository->flush();
-    }
-
-    public function remove(Post $post): void
-    {
-        $this->repository->remove($post);
-        $this->repository->flush();
-    }
-
-    public function findByIdOrNull(int $id): ?Post
-    {
-        return $this->repository->findByIdOrNull($id);
-    }
-
-    public function findById(int $id): Post
-    {
-        $post = $this->repository->findByIdOrNull($id) ?? throw new EntityNotFoundException();
-
-        return $post;
+        /** @var PostRepository */
+        return parent::getRepository();
     }
 }

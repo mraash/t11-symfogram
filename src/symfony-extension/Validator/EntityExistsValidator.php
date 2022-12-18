@@ -46,7 +46,7 @@ class EntityExistsValidator extends ConstraintValidator
             throw new LibraryUnexpectedTypeException();
         }
 
-        $entity = $repository->findOneBy([$field => $value]);
+        $entity = $repository->findOneByOrNull([$field => $value]);
 
         if ($entity === null) {
             $this->context->buildViolation($constraint->message)->addViolation();

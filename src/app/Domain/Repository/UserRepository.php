@@ -3,18 +3,19 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\User;
-use SymfonyExtension\Domain\Exception\EntityNotFoundException;
-use SymfonyExtension\Domain\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SymfonyExtension\Domain\Repository\AbstractRepository;
 
 /**
  * @extends AbstractRepository<User>
  *
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @method void save(User $user)
+ * @method void remove(User $user)
+ *
+ * @method User|null findByIdOrNull(int $id)
+ * @method User|null findOneByOrNull(array $criteria)
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method User|null findByIdOrNull(int $id)
  */
 class UserRepository extends AbstractRepository
 {
@@ -33,16 +34,6 @@ class UserRepository extends AbstractRepository
         $this->getEntityManager()->persist($user);
 
         return $user;
-    }
-
-    public function save(User $user): void
-    {
-        $this->getEntityManager()->persist($user);
-    }
-
-    public function remove(User $user): void
-    {
-        $this->getEntityManager()->remove($user);
     }
 
     public function findOneByEmailOrNull(string $email): ?User

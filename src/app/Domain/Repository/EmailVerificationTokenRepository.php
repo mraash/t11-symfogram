@@ -4,18 +4,19 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\EmailVerificationToken;
 use App\Domain\Entity\User;
-use SymfonyExtension\Domain\Exception\EntityNotFoundException;
-use SymfonyExtension\Domain\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SymfonyExtension\Domain\Repository\AbstractRepository;
 
 /**
  * @extends AbstractRepository<EmailVerificationToken>
  *
- * @method EmailVerificationToken|null find($id, $lockMode = null, $lockVersion = null)
- * @method EmailVerificationToken|null findOneBy(array $criteria, array $orderBy = null)
+ * @method void save(EmailVerificationToken $token)
+ * @method void remove(EmailVerificationToken $token)
+ *
+ * @method EmailVerificationToken|null findByIdOrNull(int $id)
+ * @method EmailVerificationToken|null findOneByOrNull(array $criteria)
  * @method EmailVerificationToken[]    findAll()
  * @method EmailVerificationToken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method EmailVerificationToken|null findByIdOrNull(int $id)
  */
 class EmailVerificationTokenRepository extends AbstractRepository
 {
@@ -34,16 +35,6 @@ class EmailVerificationTokenRepository extends AbstractRepository
         $this->save($token);
 
         return $token;
-    }
-
-    public function save(EmailVerificationToken $entity): void
-    {
-        $this->getEntityManager()->persist($entity);
-    }
-
-    public function remove(EmailVerificationToken $entity): void
-    {
-        $this->getEntityManager()->remove($entity);
     }
 
     public function findOneByTokenOrNull(string $token): ?EmailVerificationToken

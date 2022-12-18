@@ -9,61 +9,53 @@ use App\Domain\Entity\User;
 use App\Domain\Repository\EmailVerificationTokenRepository;
 use Library\Token\RandomStringGenerator;
 use SymfonyExtension\Domain\Exception\EntityNotFoundException;
+use SymfonyExtension\Domain\Service\AbstractService;
 
-class EmailVerificationTokenService
+/**
+ * @extends AbstractService<EmailVerificationToken>
+ *
+ * @method void save(EmailVerificationToken $token)
+ * @method void remove(EmailVerificationToken $token)
+ *
+ * @method EmailVerificationToken|null findByIdOrNull(int $id)
+ * @method EmailVerificationToken      findByIdOr(int $id)
+ * @method EmailVerificationToken|null findOneByOrNull(array $criteria)
+ * @method EmailVerificationToken      findOneBy(array $criteria)
+ * @method EmailVerificationToken[]    findAll()
+ * @method EmailVerificationToken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class EmailVerificationTokenService extends AbstractService
 {
     public function __construct(
-        private EmailVerificationTokenRepository $repository,
+        EmailVerificationTokenRepository $repository,
         private RandomStringGenerator $tokenGenerator,
     ) {
+        parent::__construct($repository);
     }
 
     public function create(User $user): EmailVerificationToken
     {
         $tokenString = $this->tokenGenerator->generateUriString(88);
 
-        $token = $this->repository->create($user, $tokenString);
-        $this->repository->flush();
-
-        return $token;
-    }
-
-    public function save(EmailVerificationToken $token): void
-    {
-        $this->repository->save($token);
-        $this->repository->flush();
-    }
-
-    public function remove(EmailVerificationToken $token): void
-    {
-        $this->repository->remove($token);
-        $this->repository->flush();
-    }
-
-    public function findByIdOrNull(int $id): ?EmailVerificationToken
-    {
-        return $this->repository->findByIdOrNull($id);
-    }
-
-    public function findById(int $id): EmailVerificationToken
-    {
-        $token = $this->findByIdOrNull($id) ?? throw new EntityNotFoundException();
+        $token = $this->getRepository()->create($user, $tokenString);
+        $this->getRepository()->flush();
 
         return $token;
     }
 
     public function findOneByTokenOrNull(string $token): ?EmailVerificationToken
     {
-        return $this->repository->findOneByTokenOrNull($token);
+        return $this->getRepository()->findOneByTokenOrNull($token);
     }
 
-    /**
-     * @throws EntityNotFoundException
-     */
     public function findOneByToken(string $token): EmailVerificationToken
     {
-        $token = $this->findOneByTokenOrNull($token) ?? throw new EntityNotFoundException();
+        return $this->getRepository()->findOneByTokenOrNull($token) ?? throw new EntityNotFoundException();
+    }
 
-        return $token;
+    protected function getRepository(): EmailVerificationTokenRepository
+    {
+        /** @var EmailVerificationTokenRepository */
+        return parent::getRepository();
     }
 }

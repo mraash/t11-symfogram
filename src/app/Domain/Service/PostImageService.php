@@ -7,44 +7,40 @@ namespace App\Domain\Service;
 use App\Domain\Entity\Post;
 use App\Domain\Entity\PostImage;
 use App\Domain\Repository\PostImageRepository;
-use SymfonyExtension\Domain\Exception\EntityNotFoundException;
+use SymfonyExtension\Domain\Service\AbstractService;
 
-class PostImageService
+/**
+ * @extends AbstractService<PostImage>
+ *
+ * @method void save(PostImage $image)
+ * @method void remove(PostImage $image)
+ *
+ * @method PostImage|null findByIdOrNull(int $id)
+ * @method PostImage      findByIdOr(int $id)
+ * @method PostImage|null findOneByOrNull(array $criteria)
+ * @method PostImage      findOneBy(array $criteria)
+ * @method PostImage[]    findAll()
+ * @method PostImage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class PostImageService extends AbstractService
 {
     public function __construct(
-        private PostImageRepository $repository
+        PostImageRepository $repository
     ) {
+        parent::__construct($repository);
     }
 
     public function create(Post $post, string $uri): PostImage
     {
-        $image = $this->repository->create($post, $uri);
-        $this->repository->flush();
+        $image = $this->getRepository()->create($post, $uri);
+        $this->getRepository()->flush();
 
         return $image;
     }
 
-    public function save(PostImage $image): void
+    protected function getRepository(): PostImageRepository
     {
-        $this->repository->save($image);
-        $this->repository->flush();
-    }
-
-    public function remove(PostImage $image): void
-    {
-        $this->repository->remove($image);
-        $this->repository->flush();
-    }
-
-    public function findByIdOrNull(int $id): ?PostImage
-    {
-        return $this->repository->findByIdOrNull($id);
-    }
-
-    public function findById(int $id): PostImage
-    {
-        $image = $this->findByIdOrNull($id) ?? throw new EntityNotFoundException();
-
-        return $image;
+        /** @var PostImageRepository */
+        return parent::getRepository();
     }
 }

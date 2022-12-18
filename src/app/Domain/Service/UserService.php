@@ -8,15 +8,30 @@ use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyExtension\Domain\Exception\EntityNotFoundException;
+use SymfonyExtension\Domain\Service\AbstractService;
 
-class UserService
+/**
+ * @extends AbstractService<User>
+ *
+ * @method void save(User $user)
+ * @method void remove(User $user)
+ *
+ * @method User|null findByIdOrNull(int $id)
+ * @method User      findByIdOr(int $id)
+ * @method User|null findOneByOrNull(array $criteria)
+ * @method User      findOneBy(array $criteria)
+ * @method User[]    findAll()
+ * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class UserService extends AbstractService
 {
     public function __construct(
-        private UserRepository $repository,
+        UserRepository $repository,
         private PostService $postService,
         private PostImageService $postImageService,
         private UserPasswordHasherInterface $passwordHasher,
     ) {
+        parent::__construct($repository);
     }
 
     public function create(string $email, string $plainPassword): User
@@ -28,7 +43,7 @@ class UserService
         $user->setEmail($email);
         $user->setPassword($hashedPassword);
 
-        $this->repository->save($user);
+        $this->getRepository()->save($user);
 
         return $user;
     }
@@ -40,49 +55,23 @@ class UserService
 
         $user->setAvatar($image);
 
-        $this->repository->save($user);
-        $this->repository->flush();
-    }
-
-    public function save(User $user): void
-    {
-        $this->repository->save($user);
-    }
-
-    public function remove(User $user): void
-    {
-        $this->repository->remove($user);
-    }
-
-    /**
-     * @return User[]
-     */
-    public function findAll(): array
-    {
-        return $this->repository->findAll();
-    }
-
-    public function findByIdOrNull(int $id): ?User
-    {
-        return $this->repository->findByIdOrNull($id);
-    }
-
-    public function findById(int $id): User
-    {
-        $token = $this->findByIdOrNull($id) ?? throw new EntityNotFoundException();
-
-        return $token;
+        $this->getRepository()->save($user);
+        $this->getRepository()->flush();
     }
 
     public function findOneByEmailOrNull(string $email): ?User
     {
-        return $this->repository->findOneByEmailOrNull($email);
+        return $this->getRepository()->findOneByEmailOrNull($email);
     }
 
     public function findOneByEmail(string $email): User
     {
-        $user = $this->findOneByEmailOrNull($email) ?? throw new EntityNotFoundException();;
+        return $this->getRepository()->findOneByEmailOrNull($email) ?? throw new EntityNotFoundException();
+    }
 
-        return $user;
+    protected function getRepository(): UserRepository
+    {
+        /** @var UserRepository */
+        return parent::getRepository();
     }
 }

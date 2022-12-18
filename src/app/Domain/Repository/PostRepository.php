@@ -10,11 +10,13 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
 /**
  * @extends AbstractRepository<Post>
  *
- * @method Post|null find($id, $lockMode = null, $lockVersion = null)
- * @method Post|null findOneBy(array $criteria, array $orderBy = null)
+ * @method void save(Post $post)
+ * @method void remove(Post $entity)
+ *
+ * @method Post|null findByIdOrNull(int $id)
+ * @method Post|null findOneByOrNull(array $criteria)
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method Post|null findByIdOrNull(int $id)
  */
 class PostRepository extends AbstractRepository
 {
@@ -32,15 +34,5 @@ class PostRepository extends AbstractRepository
         $this->save($post);
 
         return $post;
-    }
-
-    public function save(Post $post): void
-    {
-        $this->getEntityManager()->persist($post);
-    }
-
-    public function remove(Post $post): void
-    {
-        $this->getEntityManager()->remove($post);
     }
 }
