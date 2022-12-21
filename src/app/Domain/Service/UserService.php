@@ -15,6 +15,8 @@ use SymfonyExtension\Domain\Service\AbstractService;
  *
  * @method void save(User $user)
  * @method void remove(User $user)
+ * @method void saveList(User[] $user)
+ * @method void removeList(User[] $user)
  *
  * @method User|null findByIdOrNull(int $id)
  * @method User      findByIdOr(int $id)
@@ -40,10 +42,12 @@ class UserService extends AbstractService
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
 
-        $user->setEmail($email);
-        $user->setPassword($hashedPassword);
+        $user
+            ->setEmail($email)
+            ->setPassword($hashedPassword)
+        ;
 
-        $this->getRepository()->save($user);
+        $this->save($user);
 
         return $user;
     }
@@ -55,8 +59,7 @@ class UserService extends AbstractService
 
         $user->setAvatar($image);
 
-        $this->getRepository()->save($user);
-        $this->getRepository()->flush();
+        $this->save($user);
     }
 
     public function findOneByEmailOrNull(string $email): ?User

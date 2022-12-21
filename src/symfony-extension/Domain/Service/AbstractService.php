@@ -12,6 +12,8 @@ use SymfonyExtension\Domain\Repository\AbstractRepository;
  *
  * @phpstan-method void save(TEntity $entity)
  * @phpstan-method void remove(TEntity $entity)
+ * @phpstan-method void saveList(TEntity[] $entity)
+ * @phpstan-method void removeList(TEntity[] $entity)
  *
  * @phpstan-method TEntity|null findByIdOrNull(int $id)
  * @phpstan-method TEntity      findByIdOr(int $id)
@@ -40,11 +42,35 @@ abstract class AbstractService
     }
 
     /**
+     * @phpstan-param TEntity[] $entities
+     */
+    public function saveList(array $entities): void
+    {
+        foreach ($entities as $entity) {
+            $this->repository->save($entity);
+        }
+
+        $this->getRepository()->flush();
+    }
+
+    /**
      * @phpstan-param TEntity $entity
      */
     public function remove(object $entity): void
     {
         $this->getRepository()->remove($entity);
+        $this->getRepository()->flush();
+    }
+
+    /**
+     * @phpstan-param TEntity[] $entities
+     */
+    public function removeList(array $entities): void
+    {
+        foreach ($entities as $entity) {
+            $this->repository->remove($entity);
+        }
+
         $this->getRepository()->flush();
     }
 

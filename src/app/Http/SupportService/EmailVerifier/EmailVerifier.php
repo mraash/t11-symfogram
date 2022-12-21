@@ -26,7 +26,7 @@ class EmailVerifier
 
     public function createTokenAndSendEmail(User $user, TemplatedEmail $email): void
     {
-        $token = $this->emailVerificationTokenService->create($user);
+        $token = $this->emailVerificationTokenService->createRandom($user);
 
         $link = $this->urlGenerator->generate(
             'pactions.register.verify-email',

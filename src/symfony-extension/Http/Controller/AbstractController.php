@@ -62,4 +62,10 @@ abstract class AbstractController extends AbstractSymfonyController
 
         return false;
     }
+
+    public function getStringParameter(string $name): string
+    {
+        /** @var string */
+        return $this->getParameter($name);
+    }
 }

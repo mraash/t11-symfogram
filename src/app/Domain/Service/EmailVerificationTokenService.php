@@ -16,6 +16,8 @@ use SymfonyExtension\Domain\Service\AbstractService;
  *
  * @method void save(EmailVerificationToken $token)
  * @method void remove(EmailVerificationToken $token)
+ * @method void saveList(EmailVerificationToken[] $token)
+ * @method void removeList(EmailVerificationToken[] $token)
  *
  * @method EmailVerificationToken|null findByIdOrNull(int $id)
  * @method EmailVerificationToken      findByIdOr(int $id)
@@ -33,12 +35,16 @@ class EmailVerificationTokenService extends AbstractService
         parent::__construct($repository);
     }
 
-    public function create(User $user): EmailVerificationToken
+    public function createRandom(User $user): EmailVerificationToken
     {
         $tokenString = $this->tokenGenerator->generateUriString(88);
 
-        $token = $this->getRepository()->create($user, $tokenString);
-        $this->getRepository()->flush();
+        $token = (new EmailVerificationToken())
+            ->setOwner($user)
+            ->setToken($tokenString);
+        ;
+
+        $this->save($token);
 
         return $token;
     }

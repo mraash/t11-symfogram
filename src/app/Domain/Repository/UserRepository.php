@@ -23,16 +23,4 @@ class UserRepository extends AbstractRepository
     {
         parent::__construct($registry, User::class);
     }
-
-    public function create(string $email, string $password): User
-    {
-        $user = new User();
-
-        $user->setEmail($email);
-        $user->setPassword($password);
-
-        $this->getEntityManager()->persist($user);
-
-        return $user;
-    }
 }

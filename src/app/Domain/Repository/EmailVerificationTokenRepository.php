@@ -24,16 +24,4 @@ class EmailVerificationTokenRepository extends AbstractRepository
     {
         parent::__construct($registry, EmailVerificationToken::class);
     }
-
-    public function create(User $user, string $tokenString): EmailVerificationToken
-    {
-        $token = new EmailVerificationToken();
-
-        $token->setOwner($user);
-        $token->setToken($tokenString);
-
-        $this->save($token);
-
-        return $token;
-    }
 }

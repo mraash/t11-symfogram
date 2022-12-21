@@ -15,6 +15,8 @@ use SymfonyExtension\Domain\Service\AbstractService;
  *
  * @method void save(Post $post)
  * @method void remove(Post $post)
+ * @method void saveList(Post[] $post)
+ * @method void removeList(Post[] $post)
  *
  * @method Post|null findByIdOrNull(int $id)
  * @method Post      findByIdOr(int $id)
@@ -27,27 +29,24 @@ class PostService extends AbstractService
 {
     public function __construct(
         PostRepository $repository,
-        private PostImageRepository $postImageRepository,
+        private PostImageService $postImageService
     ) {
         parent::__construct($repository);
     }
 
     /**
-     * @param array<array<string>> $imageDataList  Array of image data arrays. Image
-     *  data schema:
-     *  0 - uri
+     * @param string[] $imageUriList
      */
-    public function create(User $user, array $imageDataList = [], string $title = null): Post
+    public function create(User $user, string $title = null, array $imageUriList = []): Post
     {
-        $post = $this->getRepository()->create($user);
+        $post = (new Post)
+            ->setOwner($user)
+            ->setTitle($title)
+        ;
 
-        foreach ($imageDataList as $imageData) {
-            $this->postImageRepository->create($post, $imageData[0]);
-        }
+        $this->postImageService->createListForPost($post, $imageUriList);
 
-        $post->setTitle($title);
-
-        $this->getRepository()->flush();
+        $this->save($post);
 
         return $post;
     }

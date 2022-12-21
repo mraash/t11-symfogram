@@ -24,16 +24,4 @@ class PostImageRepository extends AbstractRepository
     {
         parent::__construct($registry, PostImage::class);
     }
-
-    public function create(Post $post, string $uri): PostImage
-    {
-        $image = new PostImage();
-
-        $image->setPost($post);
-        $image->setUri($uri);
-
-        $this->save($image);
-
-        return $image;
-    }
 }

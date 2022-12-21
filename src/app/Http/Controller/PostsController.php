@@ -37,20 +37,18 @@ class PostsController extends AbstractController
         $title = $input->getTitleParam();
         $images = $input->getImageParams();
 
-        /** @var string */
-        $imagesFolder = $this->getParameter('public.images.posts');
+        $imagesFolder = $this->getStringParameter('public.images.posts');
 
-        $uriList = $this->fileUploader->uploadListAndReturnFilenames($images, $imagesFolder);
-        /** @var array<string[]> */
-        $imageDataList = [];
+        $filenameList = $this->fileUploader->uploadListAndReturnFilenames($images, $imagesFolder);
+        $uriList = [];
 
-        foreach ($uriList as $uri) {
-            $imageDataList[] = [$uri->getFullUri()];
+        foreach ($filenameList as $uri) {
+            $uriList[] = $uri->getFullUri();
         }
 
         $user = $this->getUser();
 
-        $this->postService->create($user, $imageDataList, $title);
+        $this->postService->create($user, $title, $uriList);
 
         return $this->redirectBack();
     }

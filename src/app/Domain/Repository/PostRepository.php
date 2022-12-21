@@ -24,15 +24,4 @@ class PostRepository extends AbstractRepository
     {
         parent::__construct($registry, Post::class);
     }
-
-    public function create(User $user): Post
-    {
-        $post = new Post();
-
-        $post->setOwner($user);
-
-        $this->save($post);
-
-        return $post;
-    }
 }
