@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 abstract class AbstractParamTypeValidator extends ConstraintValidator implements ParamTypeConverterInterface
 {
-    public function convertIfPossible(string|UploadedFile|null $paramValue): mixed
+    public function convertIfPossible(mixed $paramValue): mixed
     {
         if (!$this->canConvert($paramValue)) {
             return $paramValue;
@@ -18,7 +18,7 @@ abstract class AbstractParamTypeValidator extends ConstraintValidator implements
         return $this->convert($paramValue);
     }
 
-    abstract protected function canConvert(string|UploadedFile|null $paramValue): bool;
+    abstract protected function canConvert(mixed $paramValue): bool;
 
-    abstract protected function convert(string|UploadedFile|null $paramValue): mixed;
+    abstract protected function convert(mixed $paramValue): mixed;
 }

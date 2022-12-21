@@ -26,19 +26,19 @@ class IntegerParamTypeValidator extends AbstractParamTypeValidator
         }
     }
 
-    protected function canConvert(string|UploadedFile|null $param): bool
+    protected function canConvert(mixed $paramValue): bool
     {
-        if (!is_string($param)) {
+        if (!is_string($paramValue)) {
             return false;
         }
 
-        return preg_match('/^\d+$/', $param) === 1;
+        return preg_match('/^\d+$/', $paramValue) === 1;
     }
 
-    protected function convert(string|UploadedFile|null $param): int
+    protected function convert(mixed $paramValue): int
     {
-        /** @var string $param */
+        /** @var string $paramValue */
 
-        return (int)$param;
+        return (int)$paramValue;
     }
 }
