@@ -35,15 +35,4 @@ class UserRepository extends AbstractRepository
 
         return $user;
     }
-
-    public function findOneByEmailOrNull(string $email): ?User
-    {
-        /** @var ?User */
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.email = :val')
-            ->setParameter('val', $email)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
 }

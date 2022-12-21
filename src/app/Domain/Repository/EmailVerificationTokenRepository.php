@@ -36,15 +36,4 @@ class EmailVerificationTokenRepository extends AbstractRepository
 
         return $token;
     }
-
-    public function findOneByTokenOrNull(string $token): ?EmailVerificationToken
-    {
-        /** @var ?EmailVerificationToken */
-        return $this->createQueryBuilder('t')
-           ->andWhere('t.token = :val')
-           ->setParameter('val', $token)
-           ->getQuery()
-           ->getOneOrNullResult()
-        ;
-    }
 }

@@ -61,12 +61,12 @@ class UserService extends AbstractService
 
     public function findOneByEmailOrNull(string $email): ?User
     {
-        return $this->getRepository()->findOneByEmailOrNull($email);
+        return $this->getRepository()->findOneByOrNull(['email' => $email]);
     }
 
     public function findOneByEmail(string $email): User
     {
-        return $this->getRepository()->findOneByEmailOrNull($email) ?? throw new EntityNotFoundException();
+        return $this->findOneByEmailOrNull($email) ?? throw new EntityNotFoundException();
     }
 
     protected function getRepository(): UserRepository

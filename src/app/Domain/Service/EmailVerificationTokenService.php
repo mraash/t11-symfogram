@@ -45,12 +45,12 @@ class EmailVerificationTokenService extends AbstractService
 
     public function findOneByTokenOrNull(string $token): ?EmailVerificationToken
     {
-        return $this->getRepository()->findOneByTokenOrNull($token);
+        return $this->getRepository()->findOneByOrNull(['token' => $token]);
     }
 
     public function findOneByToken(string $token): EmailVerificationToken
     {
-        return $this->getRepository()->findOneByTokenOrNull($token) ?? throw new EntityNotFoundException();
+        return $this->findOneByTokenOrNull($token) ?? throw new EntityNotFoundException();
     }
 
     protected function getRepository(): EmailVerificationTokenRepository
