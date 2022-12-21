@@ -44,6 +44,25 @@ class FileUploader
         }
     }
 
+    /**
+     * @param UploadedFile[] $files
+     *
+     * @return UriFilename[]
+     */
+    public function uploadListAndReturnFilenames(array $files, string $path, int $filenameBaseLength = 50): array
+    {
+        $uriList = [];
+
+        foreach ($files as $file) {
+            $uri = $this->createFilename($file, $path, $filenameBaseLength);
+            $this->upload($file, $uri);
+
+            $uriList[] = $uri;
+        }
+
+        return $uriList;
+    }
+
     private function addEndSlash(string $path): string
     {
         return preg_match('/\/$/', $path) === 1 ? $path : $path . '/';

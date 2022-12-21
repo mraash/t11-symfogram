@@ -59,24 +59,4 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         return parent::findOneBy($criteria);
     }
-
-    /**
-     * @deprecated
-     */
-    public function find($id, $lockMode = null, $lockVersion = null): never
-    {
-        throw new RuntimeException(
-            'Please use "findByIdOrNull" method instade of "find".'
-        );
-    }
-
-    /**
-     * @deprecated
-     */
-    public function findOneBy(array $criteria, array $orderBy = null): never
-    {
-        throw new RuntimeException(
-            'Please use "findOneByOrNull" method instade of "findOneBy".'
-        );
-    }
 }

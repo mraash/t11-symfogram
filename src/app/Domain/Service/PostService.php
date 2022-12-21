@@ -6,6 +6,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Post;
 use App\Domain\Entity\User;
+use App\Domain\Repository\PostImageRepository;
 use App\Domain\Repository\PostRepository;
 use SymfonyExtension\Domain\Service\AbstractService;
 
@@ -25,14 +26,27 @@ use SymfonyExtension\Domain\Service\AbstractService;
 class PostService extends AbstractService
 {
     public function __construct(
-        PostRepository $repository
+        PostRepository $repository,
+        private PostImageRepository $postImageRepository,
     ) {
         parent::__construct($repository);
     }
 
-    public function create(User $user): Post
+    /**
+     * @param array<array<string>> $imageDataList  Array of image data arrays. Image
+     *  data schema:
+     *  0 - uri
+     */
+    public function create(User $user, array $imageDataList = [], string $title = null): Post
     {
         $post = $this->getRepository()->create($user);
+
+        foreach ($imageDataList as $imageData) {
+            $this->postImageRepository->create($post, $imageData[0]);
+        }
+
+        $post->setTitle($title);
+
         $this->getRepository()->flush();
 
         return $post;

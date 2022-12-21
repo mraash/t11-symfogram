@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
-use App\Domain\Service\PostImageService;
 use App\Domain\Service\PostService;
 use App\Http\Input\Post\CreatePostInput;
 use App\Http\SupportService\FileUploader\FileUploader;
@@ -16,7 +15,6 @@ class PostsController extends AbstractController
 {
     public function __construct(
         private PostService $postService,
-        private PostImageService $postImageService,
         private FileUploader $fileUploader,
         RequestStack $requestStack
     ) {
@@ -39,25 +37,20 @@ class PostsController extends AbstractController
         $title = $input->getTitleParam();
         $images = $input->getImageParams();
 
-        $user = $this->getUser();
-
-        $post = $this->postService->create($user);
-        $post->setTitle($title);
-
         /** @var string */
         $imagesFolder = $this->getParameter('public.images.posts');
 
-        foreach ($images as $uploadedImage) {
-            $uriFilename = $this->fileUploader->createFilename($uploadedImage, $imagesFolder);
-            $uri = $uriFilename->getFullUri();
+        $uriList = $this->fileUploader->uploadListAndReturnFilenames($images, $imagesFolder);
+        /** @var array<string[]> */
+        $imageDataList = [];
 
-            $this->fileUploader->upload($uploadedImage, $uriFilename);
-            $postImage = $this->postImageService->create($post, $uri);
-
-            $post->addImage($postImage);
+        foreach ($uriList as $uri) {
+            $imageDataList[] = [$uri->getFullUri()];
         }
 
-        $this->postService->save($post);
+        $user = $this->getUser();
+
+        $this->postService->create($user, $imageDataList, $title);
 
         return $this->redirectBack();
     }
