@@ -55,9 +55,9 @@ class EditAccountInput extends AbstractBaseInput
         return $this->param('last_name');
     }
 
-    public function getBioParam(): string
+    public function getBioParamOrNull(): ?string
     {
-        /** @var string */
+        /** @var ?string */
         return $this->param('bio');
     }
 }

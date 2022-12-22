@@ -113,8 +113,8 @@ class RegisterController extends AbstractController
 
         $firstName = $input->getFirstNameParam();
         $lastName = $input->getLastNameParam();
-        $bio = $input->getBioParam();
-        $avatar = $input->getAvatarParam();
+        $bio = $input->getBioParamOrNull();
+        $avatar = $input->getAvatarParamOrNull();
 
         $user = $this->getUser();
 
@@ -125,8 +125,8 @@ class RegisterController extends AbstractController
         ;
 
         if ($avatar !== null) {
-            /** @var string */
-            $avatarFolder = $this->getParameter('public.images.posts');
+            $avatarFolder = $this->getStringParameter('public.images.posts');
+
             $avatarUriFilename = $this->fileUploader->createFilename($avatar, $avatarFolder);
             $avatarUri = $avatarUriFilename->getFullUri();
 

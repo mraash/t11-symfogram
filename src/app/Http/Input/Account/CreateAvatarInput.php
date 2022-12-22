@@ -6,6 +6,7 @@ namespace App\Http\Input\Account;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
+use SymfonyExtension\Validator\NotEmpty;
 use SymfonyExtension\Validator\ParamType\Constraint\FileParamType;
 
 class CreateAvatarInput extends AbstractBaseInput
@@ -13,7 +14,14 @@ class CreateAvatarInput extends AbstractBaseInput
     protected function fields(): array
     {
         return [
-            'avatar' => new FileParamType(),
+            'avatar' => [
+                new NotEmpty(
+                    message: 'Request is invalid.'
+                ),
+                new FileParamType(
+                    message: 'Request is invalid.'
+                ),
+            ],
         ];
     }
 

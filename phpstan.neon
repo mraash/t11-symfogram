@@ -10,4 +10,5 @@ parameters:
         - '#Cannot cast mixed to float#'
         - '#Cannot cast mixed to string#'
         - '#Cannot cast mixed to bool#'
+        - "#Strict comparison using === between mixed and '' will always evaluate to false#"
     reportUnmatchedIgnoredErrors: false

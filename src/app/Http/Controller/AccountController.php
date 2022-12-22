@@ -39,7 +39,7 @@ class AccountController extends AbstractController
 
         $firstName = $input->getFirstNameParam();
         $lastName = $input->getLastNameParam();
-        $bio = $input->getBioParam() ?: null;
+        $bio = $input->getBioParamOrNull();
 
         $user = $this->getUser();
 

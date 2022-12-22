@@ -44,9 +44,9 @@ class PostService extends AbstractService
             ->setTitle($title)
         ;
 
-        $this->postImageService->createListForPost($post, $imageUriList);
-
         $this->save($post);
+
+        $this->postImageService->createListForPost($post, $imageUriList);
 
         return $post;
     }

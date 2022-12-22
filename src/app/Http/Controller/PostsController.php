@@ -34,16 +34,19 @@ class PostsController extends AbstractController
             return $this->redirectBack();
         }
 
-        $title = $input->getTitleParam();
-        $images = $input->getImageParams();
+        $title = $input->getTitleParamOrNull();
+        $images = $input->getImageParamsOrNull();
 
-        $imagesFolder = $this->getStringParameter('public.images.posts');
-
-        $filenameList = $this->fileUploader->uploadListAndReturnFilenames($images, $imagesFolder);
         $uriList = [];
 
-        foreach ($filenameList as $uri) {
-            $uriList[] = $uri->getFullUri();
+        if ($images !== null) {
+            $imagesFolder = $this->getStringParameter('public.images.posts');
+
+            $filenameList = $this->fileUploader->uploadListAndReturnFilenames($images, $imagesFolder);
+
+            foreach ($filenameList as $uriFilename) {
+                $uriList[] = $uriFilename->getFullUri();
+            }
         }
 
         $user = $this->getUser();

@@ -40,9 +40,11 @@ class CreateProfileInput extends AbstractBaseInput
                     maxMessage: 'Biography should have {{ limit }} characters or less.'
                 ),
             ]),
-            'avatar' => [
-                new FileParamType(),
-            ],
+            'avatar' => new Optional([
+                new FileParamType(
+                    message: 'Request is invalid.'
+                ),
+            ]),
         ];
     }
 
@@ -58,13 +60,13 @@ class CreateProfileInput extends AbstractBaseInput
         return $this->param('last_name');
     }
 
-    public function getBioParam(): string
+    public function getBioParamOrNull(): ?string
     {
-        /** @var string */
+        /** @var ?string */
         return $this->param('bio');
     }
 
-    public function getAvatarParam(): ?UploadedFile
+    public function getAvatarParamOrNull(): ?UploadedFile
     {
         /** @var ?UploadedFile */
         return $this->param('avatar');
