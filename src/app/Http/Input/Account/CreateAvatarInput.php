@@ -18,9 +18,7 @@ class CreateAvatarInput extends AbstractBaseInput
                 new NotEmpty(
                     message: 'Request is invalid.'
                 ),
-                new FileParamType(
-                    message: 'Request is invalid.'
-                ),
+                new FileParamType(),
             ],
         ];
     }

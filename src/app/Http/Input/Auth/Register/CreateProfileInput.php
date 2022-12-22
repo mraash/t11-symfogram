@@ -41,9 +41,7 @@ class CreateProfileInput extends AbstractBaseInput
                 ),
             ]),
             'avatar' => new Optional([
-                new FileParamType(
-                    message: 'Request is invalid.'
-                ),
+                new FileParamType(),
             ]),
         ];
     }

@@ -8,7 +8,7 @@ use SymfonyExtension\Validator\ParamType\AbstractParamType;
 
 class FileParamType extends AbstractParamType
 {
-    public string $message = 'This value should be a file.';
+    public string $message = 'Request is invalid.';
 
     public function __construct(string $message = null)
     {

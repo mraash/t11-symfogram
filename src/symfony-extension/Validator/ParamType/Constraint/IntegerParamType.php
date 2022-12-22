@@ -8,7 +8,7 @@ use SymfonyExtension\Validator\ParamType\AbstractParamType;
 
 class IntegerParamType extends AbstractParamType
 {
-    public string $message = 'This value should be an integer.';
+    public string $message = 'Request is invalid.';
 
     public function __construct(string $message = null)
     {

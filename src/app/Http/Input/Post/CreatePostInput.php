@@ -24,13 +24,9 @@ class CreatePostInput extends AbstractBaseInput
                 ),
             ]),
             'images' => new Optional([
-                new ArrayParamType(
-                    message: 'Request is invalid.'
-                ),
+                new ArrayParamType(),
                 new All([
-                    new FileParamType(
-                        message: 'Request is invalid.'
-                    ),
+                    new FileParamType(),
                 ])
             ]),
         ];

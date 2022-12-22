@@ -8,7 +8,7 @@ use SymfonyExtension\Validator\ParamType\AbstractParamType;
 
 class ArrayParamType extends AbstractParamType
 {
-    public string $message = 'This value should be an array.';
+    public string $message = 'Request is invalid.';
 
     public function __construct(string $message = null)
     {
