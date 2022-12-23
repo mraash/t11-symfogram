@@ -16,7 +16,7 @@
                 overflow: hidden
             "
         >
-            {% if user.hasAvatar() is not null %}
+            {% if user.hasAvatar() %}
                 <image
                     src="{{ asset(user.getAvatar().getUri()) }}"
                     style="
