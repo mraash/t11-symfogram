@@ -38,6 +38,10 @@ class RegisterController extends AbstractController
     #[Route('/register', methods: ['HEAD', 'GET'], name: 'pages.register')]
     public function showRegister(): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('pages.index');
+        }
+
         return $this->render('pages/auth/register.twig');
     }
 
@@ -101,6 +105,10 @@ class RegisterController extends AbstractController
     #[Route('/register/create-profile', methods: ['HEAD', 'GET'], name: 'pages.register.create-profile')]
     public function showProfileCreationsForm(): Response
     {
+        if ($this->getUser()?->hasBasedRole()) {
+            return $this->redirectToRoute('pages.index');
+        }
+
         return $this->render('pages/auth/create-profile.twig');
     }
 

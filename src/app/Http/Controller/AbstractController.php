@@ -9,9 +9,9 @@ use SymfonyExtension\Http\Controller\AbstractController as AbstractBaseControlle
 
 abstract class AbstractController extends AbstractBaseController
 {
-    protected function getUser(): User
+    protected function getUser(): ?User
     {
-        /** @var User */
+        /** @var ?User */
         return parent::getUser();
     }
 }

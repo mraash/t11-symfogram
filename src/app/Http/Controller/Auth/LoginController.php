@@ -14,9 +14,9 @@ class LoginController extends AbstractController
     #[Route('/login', methods: ['GET', 'HEAD'], name: 'pages.login')]
     public function showLogin(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('pages.index');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('pages.index');
+        }
 
         $error = $authenticationUtils->getLastAuthenticationError();
 
