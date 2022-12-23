@@ -46,9 +46,9 @@ class RegisterInput extends AbstractBaseInput
                 ),
             ],
             'password_repeat' => [
-                // new NotEmpty(
-                //     message: 'Password repeat is required.'
-                // ),
+                new NotEmpty(
+                    message: 'Password repeat is required.'
+                ),
             ],
         ];
     }

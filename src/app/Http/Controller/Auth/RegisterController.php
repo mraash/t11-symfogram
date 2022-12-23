@@ -54,16 +54,22 @@ class RegisterController extends AbstractController
 
         $email = $input->getEmailParam();
         $password = $input->getPasswordParam();
+        $passwordRepeat = $input->getPasswordRepeatParam();
+
+        if ($password !== $passwordRepeat) {
+            $this->addErrorFlash('Wrong password repetition.');
+            return $this->redirectBack();
+        }
 
         $user = $this->userService->create($email, $password);
 
-        $message = (new TemplatedEmail())
+        $emailMessage = (new TemplatedEmail())
             ->to($user->getEmail())
             ->subject('Please verify your email.')
             ->htmlTemplate('emails/verify-email.twig')
         ;
 
-        $this->emailVerifier->createTokenAndSendEmail($user, $message);
+        $this->emailVerifier->createTokenAndSendEmail($user, $emailMessage);
 
         $this->addSuccessFlash('Please check your email.');
 
