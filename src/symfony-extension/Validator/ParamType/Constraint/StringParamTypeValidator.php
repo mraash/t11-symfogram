@@ -8,19 +8,19 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use SymfonyExtension\Validator\ParamType\AbstractParamTypeValidator;
 
-class ArrayParamTypeValidator extends AbstractParamTypeValidator
+class StringParamTypeValidator extends AbstractParamTypeValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!($constraint instanceof ArrayParamType)) {
-            throw new UnexpectedTypeException($constraint, ArrayParamType::class);
+        if (!($constraint instanceof StringParamType)) {
+            throw new UnexpectedTypeException($constraint, StringParamType::class);
         }
 
         if ($value === null) {
             return;
         }
 
-        if (!is_array($value)) {
+        if (!is_string($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

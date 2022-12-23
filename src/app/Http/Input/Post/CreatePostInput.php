@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\Optional;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
 use SymfonyExtension\Validator\ParamType\Constraint\ArrayParamType;
 use SymfonyExtension\Validator\ParamType\Constraint\FileParamType;
+use SymfonyExtension\Validator\ParamType\Constraint\StringParamType;
 
 class CreatePostInput extends AbstractBaseInput
 {
@@ -18,6 +19,7 @@ class CreatePostInput extends AbstractBaseInput
     {
         return [
             'title' => new Optional([
+                new StringParamType(),
                 new Length(
                     max: 255,
                     maxMessage: 'Title should have {{ limit }} characters or less.'

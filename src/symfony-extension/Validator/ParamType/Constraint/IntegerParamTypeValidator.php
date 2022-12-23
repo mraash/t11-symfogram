@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SymfonyExtension\Validator\ParamType\Constraint;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use SymfonyExtension\Validator\ParamType\AbstractParamTypeValidator;

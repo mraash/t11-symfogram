@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\Optional;
 use SymfonyExtension\Http\Input\AbstractBaseInput;
 use SymfonyExtension\Validator\NotEmpty;
 use SymfonyExtension\Validator\ParamType\Constraint\FileParamType;
+use SymfonyExtension\Validator\ParamType\Constraint\StringParamType;
 
 class EditAccountInput extends AbstractBaseInput
 {
@@ -20,6 +21,7 @@ class EditAccountInput extends AbstractBaseInput
                 new NotEmpty(
                     message: 'First name is required.'
                 ),
+                new StringParamType(),
                 new Length(
                     max: 40,
                     maxMessage: 'First name should have {{ limit }} characters or less.'
@@ -29,12 +31,14 @@ class EditAccountInput extends AbstractBaseInput
                 new NotEmpty(
                     message: 'Last name is required.'
                 ),
+                new StringParamType(),
                 new Length(
                     max: 40,
                     maxMessage: 'Last name should have {{ limit }} characters or less.'
                 ),
             ],
             'bio' => new Optional([
+                new StringParamType(),
                 new Length(
                     max: 350,
                     maxMessage: 'Biography should have {{ limit }} characters or less.'

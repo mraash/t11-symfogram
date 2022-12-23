@@ -11,6 +11,7 @@ use SymfonyExtension\Validator\EntityMissing;
 use SymfonyExtension\Validator\NotEmpty;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
+use SymfonyExtension\Validator\ParamType\Constraint\StringParamType;
 
 class RegisterInput extends AbstractBaseInput
 {
@@ -21,6 +22,7 @@ class RegisterInput extends AbstractBaseInput
                 new NotEmpty(
                     message: 'Email is required.'
                 ),
+                new StringParamType(),
                 new Email(
                     message: 'Email is invalid.'
                 ),
@@ -38,6 +40,7 @@ class RegisterInput extends AbstractBaseInput
                 new NotEmpty(
                     message: 'Password is requried.'
                 ),
+                new StringParamType(),
                 new Length(
                     min: 3,
                     max: 100,
@@ -49,6 +52,7 @@ class RegisterInput extends AbstractBaseInput
                 new NotEmpty(
                     message: 'Password repeat is required.'
                 ),
+                new StringParamType(),
             ],
         ];
     }
