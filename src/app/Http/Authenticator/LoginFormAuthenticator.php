@@ -70,6 +70,11 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements
         /** @var User */
         $user = $token->getUser();
 
+        if (!$user->hasVerifiedRole()) {
+            $uri = $this->urlGenerator->generate('pactions.logout');
+            return new RedirectResponse($uri);
+        }
+
         if (!$user->hasBasedRole()) {
             $uri = $this->urlGenerator->generate('pages.register.create-profile');
             return new RedirectResponse($uri);
@@ -86,7 +91,6 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
         $url = $this->getLoginPageUri();
-
         return new RedirectResponse($url);
     }
 
