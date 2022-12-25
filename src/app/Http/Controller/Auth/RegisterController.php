@@ -35,7 +35,7 @@ class RegisterController extends AbstractController
         parent::__construct($requestStack);
     }
 
-    #[Route('/register', methods: ['HEAD', 'GET'], name: 'pages.register')]
+    #[Route('/register', methods: ['GET', 'HEAD'], name: 'pages.register')]
     public function showRegister(): Response
     {
         if ($this->getUser()) {
@@ -76,7 +76,7 @@ class RegisterController extends AbstractController
         return $this->redirectBack();
     }
 
-    #[Route('/register/verify-email', methods: ['HEAD', 'GET'], name: 'pactions.register.verify-email')]
+    #[Route('/register/verify-email', methods: ['GET', 'HEAD'], name: 'pactions.register.verify-email')]
     public function verifyEmail(
         Request $request,
         UserAuthenticatorInterface $userAuthenticator,
@@ -108,7 +108,7 @@ class RegisterController extends AbstractController
         return $this->redirectToRoute('pages.register.create-profile');
     }
 
-    #[Route('/register/create-profile', methods: ['HEAD', 'GET'], name: 'pages.register.create-profile')]
+    #[Route('/register/create-profile', methods: ['GET', 'HEAD'], name: 'pages.register.create-profile')]
     public function showProfileCreationsForm(): Response
     {
         if ($this->getUser()?->hasBasedRole()) {

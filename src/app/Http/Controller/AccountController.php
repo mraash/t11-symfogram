@@ -24,7 +24,7 @@ class AccountController extends AbstractController
         parent::__construct($requestStack);
     }
 
-    #[Route('account/edit', methods: ['HEAD', 'GET'], name: 'pages.account.edit')]
+    #[Route('account/edit', methods: ['GET', 'HEAD'], name: 'pages.account.edit')]
     public function showEdit(): Response
     {
         return $this->render('pages/account/edit.twig');

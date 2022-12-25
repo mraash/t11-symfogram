@@ -21,7 +21,7 @@ class PostsController extends AbstractController
         parent::__construct($requestStack);
     }
 
-    #[Route('posts/create', methods: ['HEAD', 'GET'], name: 'pages.posts.create')]
+    #[Route('posts/create', methods: ['GET', 'HEAD'], name: 'pages.posts.create')]
     public function showCreationForm(): Response
     {
         return $this->render('pages/posts/create.twig');

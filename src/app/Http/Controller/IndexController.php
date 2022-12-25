@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    #[Route('/', methods: ['HEAD', 'GET'], name: 'pages.index')]
+    #[Route('/', methods: ['GET', 'HEAD'], name: 'pages.index')]
     public function showIndex(): RedirectResponse
     {
         return $this->redirectToRoute('pages.users.index', [], 301);

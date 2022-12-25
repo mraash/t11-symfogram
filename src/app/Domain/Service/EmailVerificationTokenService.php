@@ -28,6 +28,8 @@ use SymfonyExtension\Domain\Service\AbstractService;
  */
 class EmailVerificationTokenService extends AbstractService
 {
+    private const TOKEN_LENGTH = 88;
+
     public function __construct(
         EmailVerificationTokenRepository $repository,
         private RandomStringGenerator $tokenGenerator,
@@ -35,9 +37,12 @@ class EmailVerificationTokenService extends AbstractService
         parent::__construct($repository);
     }
 
+    /**
+     * Create EmailVerificationToken entity with random token field
+     */
     public function createRandom(User $user): EmailVerificationToken
     {
-        $tokenString = $this->tokenGenerator->generateUriString(88);
+        $tokenString = $this->tokenGenerator->generateUriString(self::TOKEN_LENGTH);
 
         $token = (new EmailVerificationToken())
             ->setOwner($user)

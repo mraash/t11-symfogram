@@ -20,7 +20,7 @@ class UserController extends AbstractController
         parent::__construct($requestStack);
     }
 
-    #[Route('/users', methods: ['HEAD', 'GET'], name: 'pages.users.index')]
+    #[Route('/users', methods: ['GET', 'HEAD'], name: 'pages.users.index')]
     public function showIndex(): Response
     {
         $users = $this->userService->findAll();
@@ -30,7 +30,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/users/{id<\d+>}', methods: ['HEAD', 'GET'], name: 'pages.users.single')]
+    #[Route('/users/{id<\d+>}', methods: ['GET', 'HEAD'], name: 'pages.users.single')]
     public function showSingle(int $id): Response
     {
         $user = $this->userService->findByIdOrNull($id);
