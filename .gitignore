@@ -14,4 +14,5 @@
 
 # --- symfony/phpunit-bridge ###
 .phpunit.result.cache
+/.coverage
 /phpunit.xml

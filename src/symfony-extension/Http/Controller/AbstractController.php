@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SymfonyExtension\Http\Controller;
 
 use Library\Exceptions\UnexpectedReturnTypeException;
+use Library\Exceptions\UnexpectedTypeException;
 use SymfonyExtension\Http\Input\AbstractInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as AbstractSymfonyController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class AbstractController extends AbstractSymfonyController
 {
@@ -21,9 +21,22 @@ abstract class AbstractController extends AbstractSymfonyController
         $this->currentRequest = $requestStack->getCurrentRequest() ?? throw new UnexpectedReturnTypeException();
     }
 
-    protected function redirectBack(int $status = 302): RedirectResponse
+    /**
+     * @param string $defaultPath Path to redirect if no referrer header is set.
+     */
+    protected function redirectBack(string $defaultPath = null): RedirectResponse
     {
-        $path = $this->currentRequest->headers->get('referer') ?? throw new UnexpectedReturnTypeException();
+        $status = 302;
+        $path = $this->currentRequest->headers->get('referer');
+
+        if ($path === null) {
+            $path = $defaultPath;
+        }
+
+        if ($path === null) {
+            dd($defaultPath);
+            throw new UnexpectedTypeException();
+        }
 
         return $this->redirect($path, $status);
     }
