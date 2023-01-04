@@ -23,4 +23,20 @@ class UserRepository extends AbstractRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    /**
+     * @return User[]
+     */
+    public function findAllWithRole(string $role): array
+    {
+        $role = mb_strtoupper($role);
+
+        /** @var User[] */
+        return $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', '%"ROLE_' . $role . '"%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -6,6 +6,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyExtension\Domain\Exception\EntityNotFoundException;
 use SymfonyExtension\Domain\Service\AbstractService;
@@ -36,8 +37,14 @@ class UserService extends AbstractService
         parent::__construct($repository);
     }
 
-    public function create(string $email, string $plainPassword): User
-    {
+    public function create(
+        string $email,
+        string $plainPassword,
+        string $firstName = null,
+        string $lastName = null,
+        bool $hasVerifiedRole = false,
+        bool $hasBasedRole = false,
+    ): User {
         $user = new User();
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
@@ -45,6 +52,10 @@ class UserService extends AbstractService
         $user
             ->setEmail($email)
             ->setPassword($hashedPassword)
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
+            ->setVerifiedRole($hasVerifiedRole)
+            ->setBasedRole($hasBasedRole)
         ;
 
         $this->save($user);
@@ -60,6 +71,14 @@ class UserService extends AbstractService
         $user->setAvatar($image);
 
         $this->save($user);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findAllBased(): array
+    {
+        return $this->getRepository()->findAllWithRole('based');
     }
 
     public function findOneByEmailOrNull(string $email): ?User

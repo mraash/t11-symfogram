@@ -23,7 +23,7 @@ class UserController extends AbstractController
     #[Route('/users', methods: ['GET', 'HEAD'], name: 'pages.users.index')]
     public function showIndex(): Response
     {
-        $users = $this->userService->findAll();
+        $users = $this->userService->findAllBased();
 
         return $this->render('pages/users/index.twig', [
             'users' => $users,

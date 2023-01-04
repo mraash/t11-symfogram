@@ -195,6 +195,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function removeVerifiedRole(): self
+    {
+        $key = array_search('ROLE_VERIFIED', $this->roles);
+
+        if (isset($this->roles[$key])) {
+            unset($this->roles[$key]);
+        }
+
+        return $this;
+    }
+
+    public function setVerifiedRole(bool $addRole): self
+    {
+        $addRole ? $this->addVerifiedRole() : $this->removeVerifiedRole();
+
+        return $this;
+    }
+
     public function hasBasedRole(): bool
     {
         return in_array('ROLE_BASED', $this->roles);
@@ -205,6 +223,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->hasBasedRole()) {
             array_push($this->roles, 'ROLE_BASED');
         }
+
+        return $this;
+    }
+
+    public function removeBasedRole(): self
+    {
+        $key = array_search('ROLE_BASED', $this->roles);
+
+        if (isset($this->roles[$key])) {
+            unset($this->roles[$key]);
+        }
+
+        return $this;
+    }
+
+    public function setBasedRole(bool $addRole): self
+    {
+        $addRole ? $this->addBasedRole() : $this->removeBasedRole();
 
         return $this;
     }
