@@ -34,7 +34,6 @@ abstract class AbstractController extends AbstractSymfonyController
         }
 
         if ($path === null) {
-            dd($defaultPath);
             throw new UnexpectedTypeException();
         }
 

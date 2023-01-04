@@ -7,5 +7,8 @@ phpcs:
 phpcbf:
 	php vendor/bin/phpcbf
 
-phpunit:
+test-all:
 	php vendor/bin/phpunit
+
+test-curr:
+	php vendor/bin/phpunit tests/app/Functional/Auth/RegistrationController/CreateProfileTest.php

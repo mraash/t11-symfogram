@@ -122,7 +122,7 @@ class RegisterController extends AbstractController
     public function createProfile(CreateProfileInput $input, TokenStorageInterface $tokenStorage): RedirectResponse
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack();
+            return $this->redirectBack('/register/create-profile');
         }
 
         $firstName = $input->getFirstNameParam();
