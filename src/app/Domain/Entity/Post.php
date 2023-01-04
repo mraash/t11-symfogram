@@ -53,9 +53,9 @@ class Post
         return $this->getOwnerOrNull() ?? throw new NullPropertyException();
     }
 
-    public function setOwner(?User $owner): self
+    public function setOwner(?User $user): self
     {
-        $this->owner = $owner;
+        $this->owner = $user;
 
         return $this;
     }

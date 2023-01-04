@@ -38,7 +38,7 @@ class RegisterController extends AbstractController
     #[Route('/register', methods: ['GET', 'HEAD'], name: 'pages.register')]
     public function showRegister(): Response
     {
-        if ($this->getUser()) {
+        if ($this->getUser()?->hasBasedRole()) {
             return $this->redirectToRoute('pages.index');
         }
 
@@ -86,7 +86,7 @@ class RegisterController extends AbstractController
         $user = null;
 
         try {
-            $user = $this->emailVerifier->verifyEmailByRequest($request);
+            $user = $this->emailVerifier->verifyTokenAndReturnUser($request);
         }
         catch (TokenNotProvidedException | TokenNotFoundException) {
             $this->addErrorFlash('Email verification request was invalid.');

@@ -45,7 +45,7 @@ class EmailVerifier
      * @throws TokenNotProvidedException
      * @throws TokenNotFoundException
      */
-    public function verifyEmailByRequest(Request $request): User
+    public function verifyTokenAndReturnUser(Request $request): User
     {
         /** @var string|null */
         $tokenStr = $request->query->get('token', null);
