@@ -9,7 +9,6 @@ use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CreateProfileTest extends WebTestCase
 {
@@ -17,11 +16,8 @@ class CreateProfileTest extends WebTestCase
     private KernelBrowser $client;
     private User $loggedUser;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        unset($this->client);
-        unset($this->loggedUser);
-
         $this->client = self::createClient();
 
         /** @var UserRepository */
@@ -37,6 +33,14 @@ class CreateProfileTest extends WebTestCase
         $this->userRepository->flush();
 
         $this->client->loginUser($this->loggedUser);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->client);
+        unset($this->loggedUser);
     }
 
     public function test_profile_creation_page(): void
