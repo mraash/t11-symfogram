@@ -11,4 +11,4 @@ test-all:
 	php vendor/bin/phpunit
 
 test-curr:
-	php vendor/bin/phpunit tests/app/Functional/Auth/LoginController/LoginTest.php
+	php vendor/bin/phpunit tests/app/Functional/PostsController/CreateTest.php

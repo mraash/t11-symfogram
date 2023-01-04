@@ -21,21 +21,26 @@ class PostsController extends AbstractController
         parent::__construct($requestStack);
     }
 
-    #[Route('posts/create', methods: ['GET', 'HEAD'], name: 'pages.posts.create')]
+    #[Route('/posts/create', methods: ['GET', 'HEAD'], name: 'pages.posts.create')]
     public function showCreationForm(): Response
     {
         return $this->render('pages/posts/create.twig');
     }
 
-    #[Route('posts/create', methods: ['POST'], name: 'actions.posts.create')]
+    #[Route('/posts/create', methods: ['POST'], name: 'actions.posts.create')]
     public function create(CreatePostInput $input): Response
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack();
+            return $this->redirectBack('/posts/create');
         }
 
         $title = $input->getTitleParamOrNull();
         $images = $input->getImageParamsOrNull();
+
+        if ($title === null && $images === null) {
+            $this->addErrorFlash('Please add title or image.');
+            return $this->redirectBack('/posts/create');
+        }
 
         $uriList = [];
 
@@ -53,6 +58,6 @@ class PostsController extends AbstractController
 
         $this->postService->create($user, $title, $uriList);
 
-        return $this->redirectBack();
+        return $this->redirectBack('/posts/create');
     }
 }
