@@ -7,8 +7,8 @@ phpcs:
 phpcbf:
 	php vendor/bin/phpcbf
 
-test-all:
+phpunit:
 	php vendor/bin/phpunit
 
-test-curr:
+phpunit-curr:
 	php vendor/bin/phpunit tests/app/Functional/UserController/SingleTest.php
