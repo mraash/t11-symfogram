@@ -34,7 +34,7 @@ class AccountController extends AbstractController
     public function edit(EditAccountInput $input): RedirectResponse
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack();
+            return $this->redirectBack('/account/edit');
         }
 
         $firstName = $input->getFirstNameParam();
@@ -51,14 +51,14 @@ class AccountController extends AbstractController
 
         $this->userService->save($user);
 
-        return $this->redirectBack();
+        return $this->redirectBack('/account/edit');
     }
 
     #[Route('account/add-avatar', methods: ['POST'], name: 'actions.account.create-avatar')]
     public function createAvatar(CreateAvatarInput $input): RedirectResponse
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack();
+            return $this->redirectBack('/account/edit');
         }
 
         $avatar = $input->getAvatarParam();
@@ -74,6 +74,6 @@ class AccountController extends AbstractController
         $this->fileUploader->upload($avatar, $avatarUriFilename);
         $this->userService->createAndSetAvatar($user, $avatarUri);
 
-        return $this->redirectBack();
+        return $this->redirectBack('/account/edit');
     }
 }

@@ -16,7 +16,7 @@ class PostImage
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    private ?Post $post;
+    private ?Post $post = null;
 
     #[ORM\Column(length: 500)]
     private string $uri;

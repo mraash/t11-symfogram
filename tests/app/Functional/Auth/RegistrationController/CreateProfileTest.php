@@ -61,7 +61,7 @@ class CreateProfileTest extends WebTestCase
         $this->assertResponseRedirects('/');
         $this->assertSame('Johan', $this->loggedUser->getFirstName());
         $this->assertSame('James', $this->loggedUser->getLastName());
-        $this->assertSame('About me.', $this->loggedUser->getBio());
+        $this->assertSame('About me.', $this->loggedUser->getBioOrNull());
         $this->assertContains('ROLE_BASED', $this->loggedUser->getRoles());
     }
 

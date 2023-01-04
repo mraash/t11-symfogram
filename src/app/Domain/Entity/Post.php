@@ -19,7 +19,7 @@ class Post
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    private ?User $owner;
+    private ?User $owner = null;
 
     /** @var Collection<int,PostImage> */
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: PostImage::class)]

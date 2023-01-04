@@ -12,8 +12,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class LoginTest extends WebTestCase
 {
-    private UserPasswordHasherInterface $passwordHasher;
-    private UserRepository $userRepository;
     private KernelBrowser $client;
     private User $user;
     private string $userEmail = 'test1@test.com';
@@ -24,12 +22,12 @@ class LoginTest extends WebTestCase
         $this->client = self::createClient();
 
         /** @var UserRepository */
-        $this->userRepository = self::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         /** @var UserPasswordHasherInterface */
-        $this->passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
+        $passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
 
         $this->user = new User();
-        $hashedPassword = $this->passwordHasher->hashPassword($this->user, $this->userPlainPassword);
+        $hashedPassword = $passwordHasher->hashPassword($this->user, $this->userPlainPassword);
 
         $this->user
             ->setEmail($this->userEmail)
@@ -38,8 +36,8 @@ class LoginTest extends WebTestCase
             ->addBasedRole()
         ;
 
-        $this->userRepository->save($this->user);
-        $this->userRepository->flush();
+        $userRepository->save($this->user);
+        $userRepository->flush();
     }
 
     protected function tearDown(): void

@@ -49,13 +49,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(length: 40, nullable: true)]
-    private ?string $firstName;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 40, nullable: true)]
-    private ?string $lastName;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 350, nullable: true)]
-    private ?string $bio;
+    private ?string $bio = null;
 
     public function __construct()
     {
@@ -257,7 +257,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBio(): string|null
+    public function getBioOrNull(): string|null
     {
         return $this->bio;
     }
