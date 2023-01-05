@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\App\Functional\AccountController;
+namespace Tests\App\Functional\PostsController;
 
 use App\Domain\Entity\Post;
 use App\Domain\Entity\User;
