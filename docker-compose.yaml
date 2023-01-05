@@ -21,7 +21,7 @@ services:
     volumes:
       - ./var/volumes/database:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=root
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=symfogram
     ports:
