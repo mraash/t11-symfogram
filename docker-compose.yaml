@@ -16,16 +16,30 @@ services:
 
   database:
     container_name: symfogram_db
-    image: postgres:14.3-alpine
+    image: mysql:latest
     restart: always
     volumes:
-      - ./var/volumes/database:/var/lib/postgresql/data
+      - ./var/volumes/database:/var/lib/mysql
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=symfogram
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_RANDOM_ROOT_PASSWORD=
+      - MYSQL_DATABASE=symfogram
     ports:
-      - 5432:5432
+      - 3306:3306
+
+  # # PostgreSQL
+  # database:
+  #   container_name: symfogram_db
+  #   image: postgres:14.3-alpine
+  #   restart: always
+  #   volumes:
+  #     - ./var/volumes/database:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_USER=root
+  #     - POSTGRES_PASSWORD=123
+  #     - POSTGRES_DB=symfogram
+  #   ports:
+  #     - 5432:5432
 
   mailer:
     container_name: symfogram_mailer
