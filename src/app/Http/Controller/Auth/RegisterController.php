@@ -38,7 +38,7 @@ class RegisterController extends AbstractController
     #[Route('/register', methods: ['GET', 'HEAD'], name: 'pages.register')]
     public function showRegister(): Response
     {
-        if ($this->getUser()?->hasBasedRole()) {
+        if ($this->getUserOrNull()?->hasBasedRole()) {
             return $this->redirectToRoute('pages.index');
         }
 
@@ -111,7 +111,7 @@ class RegisterController extends AbstractController
     #[Route('/register/create-profile', methods: ['GET', 'HEAD'], name: 'pages.register.create-profile')]
     public function showProfileCreationsForm(): Response
     {
-        if ($this->getUser()?->hasBasedRole()) {
+        if ($this->getUserOrNull()?->hasBasedRole()) {
             return $this->redirectToRoute('pages.index');
         }
 

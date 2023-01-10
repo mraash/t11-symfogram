@@ -35,10 +35,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     /**
-     * @var UserRoles[] The hierarchy -
-     *  CREATED   - has only email and password fields
-     *  VERIFIED  - email is verified
-     *  BASED     - has firstName, lastName and bio fields
+     * @var string[] The hierarchy -
+     *  ROLE_CREATED   - has only email and password fields
+     *  ROLE_VERIFIED  - email is verified
+     *  ROLE_BASED     - profile is fully created (has required firstName, lastName and optional fields)
      */
     #[ORM\Column]
     private array $roles;
@@ -179,7 +179,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param UserRoles[] $roles
+     * @param string[] $roles
      */
     public function setRoles(array $roles): self
     {
