@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Auth\RegistrationController;
 
+use App\Domain\Constant\UserRoles;
 use App\Domain\Entity\EmailVerificationToken;
 use App\Domain\Entity\User;
 use App\Domain\Repository\EmailVerificationTokenRepository;
@@ -42,7 +43,7 @@ class VerifyEmailTest extends WebTestCase
         $client->request('GET', '/register/verify-email', ['token' => $tokenString]);
 
         $this->assertResponseRedirects('/register/create-profile');
-        $this->assertContains('ROLE_VERIFIED', $user->getRoles());
+        $this->assertContains(UserRoles::Verified->value, $user->getRoles());
     }
 
     public function test_verification_with_no_token_in_db(): void

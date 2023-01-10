@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Service;
 
+use App\Domain\Constant\UserRoles;
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -78,7 +79,7 @@ class UserService extends AbstractService
      */
     public function findAllBased(): array
     {
-        return $this->getRepository()->findAllWithRole('based');
+        return $this->getRepository()->findAllWithRole(UserRoles::Based);
     }
 
     public function findOneByEmailOrNull(string $email): ?User

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Auth\RegistrationController;
 
-use App\Domain\Entity\PostImage;
+use App\Domain\Constant\UserRoles;
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -62,7 +62,7 @@ class CreateProfileTest extends WebTestCase
         $this->assertSame('Johan', $this->loggedUser->getFirstName());
         $this->assertSame('James', $this->loggedUser->getLastName());
         $this->assertSame('About me.', $this->loggedUser->getBioOrNull());
-        $this->assertContains('ROLE_BASED', $this->loggedUser->getRoles());
+        $this->assertContains(UserRoles::Based->value, $this->loggedUser->getRoles());
     }
 
     public function test_profile_creation_with_empty_required_parameters(): void
@@ -72,6 +72,6 @@ class CreateProfileTest extends WebTestCase
         ]);
 
         $this->assertResponseRedirects('/register/create-profile');
-        $this->assertNotContains('ROLE_BASED', $this->loggedUser->getRoles());
+        $this->assertNotContains(UserRoles::Based->value, $this->loggedUser->getRoles());
     }
 }

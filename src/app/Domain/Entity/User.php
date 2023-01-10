@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Constant\UserRoles;
 use App\Domain\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,13 +35,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     /**
-     * @var string[] The hierarchy -
+     * @var UserRoles[] The hierarchy -
      *  CREATED   - has only email and password fields
      *  VERIFIED  - email is verified
      *  BASED     - has firstName, lastName and bio fields
      */
     #[ORM\Column]
-    private array $roles = ['ROLE_CREATED'];
+    private array $roles;
 
     /**
      * @var string The hashed password.
@@ -60,6 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->roles = [UserRoles::Created->value];
     }
 
     public function getId(): int
@@ -166,13 +168,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_CREATED';
+        $roles[] = UserRoles::Created->value;
 
         return array_unique($roles);
     }
 
+    public function hasRole(UserRoles $role): bool
+    {
+        return in_array($role->value, $this->roles);
+    }
+
     /**
-     * @param string[] $roles
+     * @param UserRoles[] $roles
      */
     public function setRoles(array $roles): self
     {
@@ -181,66 +188,81 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function addRole(UserRoles $role): self
+    {
+        if (!$this->hasRole($role)) {
+            array_push($this->roles, $role->value);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(UserRoles $role): self
+    {
+        $key = array_search($role->value, $this->roles);
+
+        if (isset($this->roles[$key])) {
+            unset($this->roles[$key]);
+        }
+
+        return $this;
+    }
+
+    public function setRole(UserRoles $role, bool $value): self
+    {
+        $value ? $this->addRole($role) : $this->removeRole($role);
+
+        return $this;
+    }
+
     public function hasVerifiedRole(): bool
     {
-        return in_array('ROLE_VERIFIED', $this->roles);
+        return $this->hasRole(UserRoles::Verified);
     }
 
     public function addVerifiedRole(): self
     {
-        if (!$this->hasVerifiedRole()) {
-            array_push($this->roles, 'ROLE_VERIFIED');
-        }
+        $this->addRole(UserRoles::Verified);
 
         return $this;
     }
 
     public function removeVerifiedRole(): self
     {
-        $key = array_search('ROLE_VERIFIED', $this->roles);
-
-        if (isset($this->roles[$key])) {
-            unset($this->roles[$key]);
-        }
+        $this->removeRole(UserRoles::Verified);
 
         return $this;
     }
 
-    public function setVerifiedRole(bool $addRole): self
+    public function setVerifiedRole(bool $value): self
     {
-        $addRole ? $this->addVerifiedRole() : $this->removeVerifiedRole();
+        $this->setRole(UserRoles::Verified, $value);
 
         return $this;
     }
 
     public function hasBasedRole(): bool
     {
-        return in_array('ROLE_BASED', $this->roles);
+        return $this->hasRole(UserRoles::Based);
     }
 
     public function addBasedRole(): self
     {
-        if (!$this->hasBasedRole()) {
-            array_push($this->roles, 'ROLE_BASED');
-        }
+        $this->addRole(UserRoles::Based);
 
         return $this;
     }
 
     public function removeBasedRole(): self
     {
-        $key = array_search('ROLE_BASED', $this->roles);
-
-        if (isset($this->roles[$key])) {
-            unset($this->roles[$key]);
-        }
+        $this->removeRole(UserRoles::Based);
 
         return $this;
     }
 
-    public function setBasedRole(bool $addRole): self
+    public function setBasedRole(bool $value): self
     {
-        $addRole ? $this->addBasedRole() : $this->removeBasedRole();
+        $this->setRole(UserRoles::Based, $value);
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Repository;
 
+use App\Domain\Constant\UserRoles;
 use App\Domain\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyExtension\Domain\Repository\AbstractRepository;
@@ -27,14 +28,12 @@ class UserRepository extends AbstractRepository
     /**
      * @return User[]
      */
-    public function findAllWithRole(string $role): array
+    public function findAllWithRole(UserRoles $role): array
     {
-        $role = mb_strtoupper($role);
-
         /** @var User[] */
         return $this->createQueryBuilder('u')
             ->where('u.roles LIKE :role')
-            ->setParameter('role', '%"ROLE_' . $role . '"%')
+            ->setParameter('role', "%\"{$role->value}\"%")
             ->getQuery()
             ->getResult()
         ;

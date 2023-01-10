@@ -14,6 +14,7 @@ class IndexTest extends WebTestCase
 {
     private KernelBrowser $client;
     private User $loggedUser;
+    private UserService $userService;
 
     protected function setUp(): void
     {
