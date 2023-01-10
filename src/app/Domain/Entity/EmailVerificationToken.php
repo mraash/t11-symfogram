@@ -30,11 +30,9 @@ class EmailVerificationToken
         return $this->owner;
     }
 
-    public function setOwner(User $user): self
+    public function setOwner(User $user): void
     {
         $this->owner = $user;
-
-        return $this;
     }
 
     public function getToken(): string
@@ -42,10 +40,8 @@ class EmailVerificationToken
         return $this->token;
     }
 
-    public function setToken(string $token): self
+    public function setToken(string $token): void
     {
         $this->token = $token;
-
-        return $this;
     }
 }

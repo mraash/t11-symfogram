@@ -44,10 +44,10 @@ class EmailVerificationTokenService extends AbstractService
     {
         $tokenString = $this->tokenGenerator->generateUriString(self::TOKEN_LENGTH);
 
-        $token = (new EmailVerificationToken())
-            ->setOwner($user)
-            ->setToken($tokenString);
-        ;
+        $token = new EmailVerificationToken();
+
+        $token->setOwner($user);
+        $token->setToken($tokenString);
 
         $this->save($token);
 

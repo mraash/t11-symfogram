@@ -29,12 +29,10 @@ class LoginTest extends WebTestCase
         $this->user = new User();
         $hashedPassword = $passwordHasher->hashPassword($this->user, $this->userPlainPassword);
 
-        $this->user
-            ->setEmail($this->userEmail)
-            ->setPassword($hashedPassword)
-            ->addVerifiedRole()
-            ->addBasedRole()
-        ;
+        $this->user->setEmail($this->userEmail);
+        $this->user->setPassword($hashedPassword);
+        $this->user->addVerifiedRole();
+        $this->user->addBasedRole();
 
         $userRepository->save($this->user);
         $userRepository->flush();

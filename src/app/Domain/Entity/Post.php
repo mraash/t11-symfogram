@@ -53,11 +53,9 @@ class Post
         return $this->getOwnerOrNull() ?? throw new NullPropertyException();
     }
 
-    public function setOwner(?User $user): self
+    public function setOwner(?User $user): void
     {
         $this->owner = $user;
-
-        return $this;
     }
 
     /**
@@ -68,17 +66,15 @@ class Post
         return $this->images;
     }
 
-    public function addImage(PostImage $image): self
+    public function addImage(PostImage $image): void
     {
         if (!$this->images->contains($image)) {
             $this->images->add($image);
             $image->setPost($this);
         }
-
-        return $this;
     }
 
-    public function removeImage(PostImage $image): self
+    public function removeImage(PostImage $image): void
     {
         if ($this->images->removeElement($image)) {
             // set the owning side to null (unless already changed)
@@ -86,8 +82,6 @@ class Post
                 $image->setPost(null);
             }
         }
-
-        return $this;
     }
 
     public function getTitleOrNull(): ?string
@@ -105,10 +99,8 @@ class Post
         return $this->getTitleOrNull() ?? throw new NullPropertyException();
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 }

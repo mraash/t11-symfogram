@@ -61,10 +61,10 @@ class PostImageService extends AbstractService
 
     private function createEntity(Post $post, string $uri): PostImage
     {
-        $image = (new PostImage())
-            ->setPost($post)
-            ->setUri($uri)
-        ;
+        $image = new PostImage();
+
+        $image->setPost($post);
+        $image->setUri($uri);
 
         return $image;
     }

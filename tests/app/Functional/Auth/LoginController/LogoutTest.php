@@ -25,12 +25,10 @@ class LogoutTest extends WebTestCase
 
         $this->user = new User();
 
-        $this->user
-            ->setEmail('test1@test.com')
-            ->setPassword('123')
-            ->addVerifiedRole()
-            ->addBasedRole()
-        ;
+        $this->user->setEmail('test1@test.com');
+        $this->user->setPassword('123');
+        $this->user->addVerifiedRole();
+        $this->user->addBasedRole();
 
         $this->userRepository->save($this->user);
         $this->userRepository->flush();

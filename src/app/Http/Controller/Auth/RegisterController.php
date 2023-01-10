@@ -132,11 +132,9 @@ class RegisterController extends AbstractController
 
         $user = $this->getUser();
 
-        $user
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setBio($bio)
-        ;
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setBio($bio);
 
         if ($avatar !== null) {
             $avatarFolder = $this->getStringParameter('public.images.posts');

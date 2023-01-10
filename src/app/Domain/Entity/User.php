@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->emailVerificationToken;
     }
 
-    public function setEmailVerificationToken(EmailVerificationToken $emailVerificationToken): self
+    public function setEmailVerificationToken(EmailVerificationToken $emailVerificationToken): void
     {
         // set the owning side of the relation if necessary
         if ($emailVerificationToken->getOwner() !== $this) {
@@ -82,8 +82,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->emailVerificationToken = $emailVerificationToken;
-
-        return $this;
     }
 
     public function getAvatarOrNull(): ?PostImage
@@ -101,11 +99,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getAvatarOrNull() ?? throw new NullPropertyException();
     }
 
-    public function setAvatar(?PostImage $avatar): self
+    public function setAvatar(?PostImage $avatar): void
     {
         $this->avatar = $avatar;
-
-        return $this;
     }
 
     /**
@@ -116,17 +112,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->posts;
     }
 
-    public function addPost(Post $post): self
+    public function addPost(Post $post): void
     {
         if (!$this->posts->contains($post)) {
             $this->posts->add($post);
             $post->setOwner($this);
         }
-
-        return $this;
     }
 
-    public function removePost(Post $post): self
+    public function removePost(Post $post): void
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
@@ -134,8 +128,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $post->setOwner(null);
             }
         }
-
-        return $this;
     }
 
     public function getEmail(): string
@@ -143,11 +135,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): void
     {
         $this->email = $email;
-
-        return $this;
     }
 
     /**
@@ -181,38 +171,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param string[] $roles
      */
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
-
-        return $this;
     }
 
-    public function addRole(UserRoles $role): self
+    public function addRole(UserRoles $role): void
     {
         if (!$this->hasRole($role)) {
             array_push($this->roles, $role->value);
         }
-
-        return $this;
     }
 
-    public function removeRole(UserRoles $role): self
+    public function removeRole(UserRoles $role): void
     {
         $key = array_search($role->value, $this->roles);
 
         if (isset($this->roles[$key])) {
             unset($this->roles[$key]);
         }
-
-        return $this;
     }
 
-    public function setRole(UserRoles $role, bool $value): self
+    public function setRole(UserRoles $role, bool $value): void
     {
         $value ? $this->addRole($role) : $this->removeRole($role);
-
-        return $this;
     }
 
     public function hasVerifiedRole(): bool
@@ -220,25 +202,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->hasRole(UserRoles::Verified);
     }
 
-    public function addVerifiedRole(): self
+    public function addVerifiedRole(): void
     {
         $this->addRole(UserRoles::Verified);
-
-        return $this;
     }
 
-    public function removeVerifiedRole(): self
+    public function removeVerifiedRole(): void
     {
         $this->removeRole(UserRoles::Verified);
-
-        return $this;
     }
 
-    public function setVerifiedRole(bool $value): self
+    public function setVerifiedRole(bool $value): void
     {
         $this->setRole(UserRoles::Verified, $value);
-
-        return $this;
     }
 
     public function hasBasedRole(): bool
@@ -246,25 +222,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->hasRole(UserRoles::Based);
     }
 
-    public function addBasedRole(): self
+    public function addBasedRole(): void
     {
         $this->addRole(UserRoles::Based);
-
-        return $this;
     }
 
-    public function removeBasedRole(): self
+    public function removeBasedRole(): void
     {
         $this->removeRole(UserRoles::Based);
-
-        return $this;
     }
 
-    public function setBasedRole(bool $value): self
+    public function setBasedRole(bool $value): void
     {
         $this->setRole(UserRoles::Based, $value);
-
-        return $this;
     }
 
     /**
@@ -275,11 +245,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-
-        return $this;
     }
 
     /**
@@ -296,11 +264,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName;
     }
 
-    public function setFirstName(?string $firstName): self
+    public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
-
-        return $this;
     }
 
     public function getLastName(): string|null
@@ -308,11 +274,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->lastName;
     }
 
-    public function setLastName(?string $lastName): self
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
-
-        return $this;
     }
 
     public function getBioOrNull(): string|null
@@ -320,10 +284,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->bio;
     }
 
-    public function setBio(?string $bio): self
+    public function setBio(?string $bio): void
     {
         $this->bio = $bio;
-
-        return $this;
     }
 }

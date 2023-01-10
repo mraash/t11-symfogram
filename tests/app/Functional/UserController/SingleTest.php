@@ -25,14 +25,14 @@ class SingleTest extends WebTestCase
         /** @var UserRepository */
         $userRepository = self::getContainer()->get(UserRepository::class);
 
-        $this->loggedUser = (new User())
-            ->setEmail('test1@test.com')
-            ->setPassword('123')
-            ->setFirstName('Aa')
-            ->setLastName('Aaa')
-            ->addVerifiedRole()
-            ->addBasedRole()
-        ;
+        $this->loggedUser = new User();
+
+        $this->loggedUser->setEmail('test1@test.com');
+        $this->loggedUser->setPassword('123');
+        $this->loggedUser->setFirstName('Aa');
+        $this->loggedUser->setLastName('Aaa');
+        $this->loggedUser->addVerifiedRole();
+        $this->loggedUser->addBasedRole();
 
         $userRepository->save($this->loggedUser);
         $userRepository->flush();

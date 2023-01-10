@@ -23,11 +23,11 @@ class CreateProfileTest extends WebTestCase
         /** @var UserRepository */
         $this->userRepository = self::getContainer()->get(UserRepository::class);
 
-        $this->loggedUser = (new User())
-            ->setEmail('test1@test.com')
-            ->setPassword('123')
-            ->addVerifiedRole()
-        ;
+        $this->loggedUser = new User();
+
+        $this->loggedUser->setEmail('test1@test.com');
+        $this->loggedUser->setPassword('123');
+        $this->loggedUser->addVerifiedRole();
 
         $this->userRepository->save($this->loggedUser);
         $this->userRepository->flush();

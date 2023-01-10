@@ -67,10 +67,10 @@ class RegisterTest extends WebTestCase
         /** @var UserRepository */
         $repository = self::getContainer()->get(UserRepository::class);
 
-        $user = (new User())
-            ->setEmail('test1@test.com')
-            ->setPassword('abc')
-        ;
+        $user = new User();
+
+        $user->setEmail('test1@test.com');
+        $user->setPassword('abc');
 
         $repository->save($user);
         $repository->flush();

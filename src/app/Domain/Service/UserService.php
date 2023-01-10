@@ -50,14 +50,12 @@ class UserService extends AbstractService
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
 
-        $user
-            ->setEmail($email)
-            ->setPassword($hashedPassword)
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setVerifiedRole($hasVerifiedRole)
-            ->setBasedRole($hasBasedRole)
-        ;
+        $user->setEmail($email);
+        $user->setPassword($hashedPassword);
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setVerifiedRole($hasVerifiedRole);
+        $user->setBasedRole($hasBasedRole);
 
         $this->save($user);
 

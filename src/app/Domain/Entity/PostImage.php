@@ -41,11 +41,9 @@ class PostImage
         return $this->getPostOrNull() ?? throw new NullPropertyException();
     }
 
-    public function setPost(?Post $post): self
+    public function setPost(?Post $post): void
     {
         $this->post = $post;
-
-        return $this;
     }
 
     public function getUri(): string
@@ -53,10 +51,8 @@ class PostImage
         return $this->uri;
     }
 
-    public function setUri(string $uri): self
+    public function setUri(string $uri): void
     {
         $this->uri = $uri;
-
-        return $this;
     }
 }

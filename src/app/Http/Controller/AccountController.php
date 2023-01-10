@@ -43,11 +43,9 @@ class AccountController extends AbstractController
 
         $user = $this->getUser();
 
-        $user
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setBio($bio)
-        ;
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setBio($bio);
 
         $this->userService->save($user);
 

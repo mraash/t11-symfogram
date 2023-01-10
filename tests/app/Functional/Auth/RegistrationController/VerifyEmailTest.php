@@ -23,19 +23,20 @@ class VerifyEmailTest extends WebTestCase
         /** @var EmailVerificationTokenRepository */
         $tokenRepository = self::getContainer()->get(EmailVerificationTokenRepository::class);
 
-        $user = (new User())
-            ->setEmail('test1@test.com')
-            ->setPassword('123')
-        ;
+        $user = new User();
+            
+        $user->setEmail('test1@test.com');
+        $user->setPassword('123');
 
         $repository->save($user);
         $repository->flush();
 
         $tokenString = 'abcde';
-        $token = (new EmailVerificationToken())
-            ->setOwner($user)
-            ->setToken($tokenString)
-        ;
+
+        $token = new EmailVerificationToken();
+
+        $token->setOwner($user);
+        $token->setToken($tokenString);
 
         $tokenRepository->save($token);
         $tokenRepository->flush();
