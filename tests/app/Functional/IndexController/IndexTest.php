@@ -6,7 +6,6 @@ namespace Tests\App\Functional\IndexController;
 
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
-use App\Domain\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -14,13 +13,10 @@ class IndexTest extends WebTestCase
 {
     private KernelBrowser $client;
     private User $loggedUser;
-    private UserService $userService;
 
     protected function setUp(): void
     {
         $this->client = self::createClient();
-
-        $this->userService = self::getContainer()->get(UserService::class);
 
         /** @var UserRepository */
         $userRepository = self::getContainer()->get(UserRepository::class);
