@@ -29,7 +29,7 @@ abstract class AbstractService
      */
     public function __construct(
         private AbstractRepository $repository
-    ) {  
+    ) {
     }
 
     /**

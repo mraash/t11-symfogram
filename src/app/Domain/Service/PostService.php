@@ -39,7 +39,7 @@ class PostService extends AbstractService
      */
     public function create(User $user, string $title = null, array $imageUriList = []): Post
     {
-        $post = (new Post)
+        $post = (new Post())
             ->setOwner($user)
             ->setTitle($title)
         ;
