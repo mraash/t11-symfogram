@@ -61,15 +61,10 @@ class AccountController extends AbstractController
 
         $avatar = $input->getAvatarParam();
 
-        /** @var string */
-        $imagesFolder = $this->getParameter('public.images.posts');
-
-        $avatarUriFilename = $this->fileUploader->createFilename($avatar, $imagesFolder);
-
-        $avatarUri = $avatarUriFilename->getFullUri();
+        $imagesFolder = $this->getStringParameter('public.images.posts');
         $user = $this->getUser();
 
-        $this->fileUploader->upload($avatar, $avatarUriFilename);
+        $avatarUri = $this->fileUploader->uploadAndReturnFilename($avatar, $imagesFolder)->getFullUri();
         $this->userService->createAndSetAvatar($user, $avatarUri);
 
         return $this->redirectBack('/account/edit');

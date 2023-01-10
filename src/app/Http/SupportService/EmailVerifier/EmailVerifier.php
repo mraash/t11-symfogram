@@ -24,8 +24,14 @@ class EmailVerifier
     ) {
     }
 
-    public function createTokenAndSendEmail(User $user, TemplatedEmail $email): void
+    public function createTokenAndSendEmail(User $user): void
     {
+        $email = new TemplatedEmail();
+
+        $email->to($user->getEmail());
+        $email->subject('Please verify your email.');
+        $email->htmlTemplate('emails/verify-email.twig');
+
         $token = $this->emailVerificationTokenService->createRandom($user);
 
         $link = $this->urlGenerator->generate(

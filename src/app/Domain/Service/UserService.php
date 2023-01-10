@@ -62,6 +62,26 @@ class UserService extends AbstractService
         return $user;
     }
 
+    public function activateProfile(
+        User $user,
+        string $firstName,
+        string $lastName,
+        string $bio = null,
+        string $avatarUri = null,
+    ): void {
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setBio($bio);
+
+        if ($avatarUri !== null) {
+            $this->createAndSetAvatar($user, $avatarUri);
+        }
+
+        $user->addBasedRole();
+
+        $this->save($user);
+    }
+
     public function createAndSetAvatar(User $user, string $avatarUri): void
     {
         $post = $this->postService->create($user);

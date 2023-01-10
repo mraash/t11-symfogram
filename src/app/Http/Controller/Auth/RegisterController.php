@@ -63,13 +63,7 @@ class RegisterController extends AbstractController
 
         $user = $this->userService->create($email, $password);
 
-        $emailMessage = (new TemplatedEmail())
-            ->to($user->getEmail())
-            ->subject('Please verify your email.')
-            ->htmlTemplate('emails/verify-email.twig')
-        ;
-
-        $this->emailVerifier->createTokenAndSendEmail($user, $emailMessage);
+        $this->emailVerifier->createTokenAndSendEmail($user);
 
         $this->addSuccessFlash('Please check your email.');
 
@@ -93,17 +87,7 @@ class RegisterController extends AbstractController
             return $this->redirectToRoute('pages.register');
         }
 
-        if (!$user->hasVerifiedRole()) {
-            $this->addErrorFlash('Something went wrong. Your email is not verified.');
-            return $this->redirectToRoute('pages.register');
-        }
-
         $userAuthenticator->authenticateUser($user, $authenticator, $request);
-
-        if ($user->hasBasedRole()) {
-            $this->addInfoFlash('You alerady have verified account.');
-            return $this->redirectToRoute('pages.index');
-        }
 
         return $this->redirectToRoute('pages.register.create-profile');
     }
@@ -130,29 +114,21 @@ class RegisterController extends AbstractController
         $bio = $input->getBioParamOrNull();
         $avatar = $input->getAvatarParamOrNull();
 
-        $user = $this->getUser();
+        $avatarUri = null;
 
-        $user->setFirstName($firstName);
-        $user->setLastName($lastName);
-        $user->setBio($bio);
+        $user = $this->getUser();
 
         if ($avatar !== null) {
             $avatarFolder = $this->getStringParameter('public.images.posts');
 
-            $avatarUriFilename = $this->fileUploader->createFilename($avatar, $avatarFolder);
-            $avatarUri = $avatarUriFilename->getFullUri();
-
-            $this->fileUploader->upload($avatar, $avatarUriFilename);
-            $this->userService->createAndSetAvatar($user, $avatarUri);
+            $avatarUri = $this->fileUploader->uploadAndReturnFilename($avatar, $avatarFolder)->getFullUri();
         }
 
-        $user->addBasedRole();
-
-        $this->userService->save($user);
+        $this->userService->activateProfile($user, $firstName, $lastName, $bio, $avatarUri);
 
         // Create new token because user has new role
-        $newToken = new UsernamePasswordToken($user, 'main', $user->getRoles());
-        $tokenStorage->setToken($newToken);
+        $authToken = new UsernamePasswordToken($user, 'main', $user->getRoles());
+        $tokenStorage->setToken($authToken);
 
         return $this->redirectToRoute('pages.index');
     }

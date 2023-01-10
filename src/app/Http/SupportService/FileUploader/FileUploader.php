@@ -15,9 +15,9 @@ class FileUploader
     ) {
     }
 
-    public function createFilename(UploadedFile $file, string $path, int $filenameBaseLength = 50): UriFilename
+    public function createFilename(UploadedFile $file, string $path, int $filenameLength = 50): UriFilename
     {
-        $filenameBase = $this->randomStringGenerator->generateUriString($filenameBaseLength);
+        $filenameBase = $this->randomStringGenerator->generateUriString($filenameLength);
         $extension = $file->guessExtension();
 
         $path = $this->addEndSlash($path);
@@ -44,17 +44,25 @@ class FileUploader
         }
     }
 
+    public function uploadAndReturnFilename(UploadedFile $file, string $path, int $filenameLength = 50): UriFilename
+    {
+        $uri = $this->createFilename($file, $path, $filenameLength);
+        $this->upload($file, $uri);
+
+        return $uri;
+    }
+
     /**
      * @param UploadedFile[] $files
      *
      * @return UriFilename[]
      */
-    public function uploadListAndReturnFilenames(array $files, string $path, int $filenameBaseLength = 50): array
+    public function uploadListAndReturnFilenames(array $files, string $path, int $filenameLength = 50): array
     {
         $uriList = [];
 
         foreach ($files as $file) {
-            $uri = $this->createFilename($file, $path, $filenameBaseLength);
+            $uri = $this->createFilename($file, $path, $filenameLength);
             $this->upload($file, $uri);
 
             $uriList[] = $uri;
