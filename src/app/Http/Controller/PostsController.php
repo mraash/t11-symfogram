@@ -31,7 +31,7 @@ class PostsController extends AbstractController
     public function create(CreatePostInput $input): Response
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack('/posts/create');
+            return $this->redirectBack();
         }
 
         $title = $input->getTitleParamOrNull();
@@ -39,7 +39,7 @@ class PostsController extends AbstractController
 
         if ($title === null && $images === null) {
             $this->addErrorFlash('Please add title or image.');
-            return $this->redirectBack('/posts/create');
+            return $this->redirectBack();
         }
 
         $uriList = [];
@@ -58,6 +58,6 @@ class PostsController extends AbstractController
 
         $this->postService->create($user, $title, $uriList);
 
-        return $this->redirectBack('/posts/create');
+        return $this->redirectBack();
     }
 }

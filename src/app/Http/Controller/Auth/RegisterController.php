@@ -49,7 +49,7 @@ class RegisterController extends AbstractController
     public function register(RegisterInput $input): RedirectResponse
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack('/register');
+            return $this->redirectBack();
         }
 
         $email = $input->getEmailParam();
@@ -58,7 +58,7 @@ class RegisterController extends AbstractController
 
         if ($password !== $passwordRepeat) {
             $this->addErrorFlash('Wrong password repetition.');
-            return $this->redirectBack('/register');
+            return $this->redirectBack();
         }
 
         $user = $this->userService->create($email, $password);
@@ -67,7 +67,7 @@ class RegisterController extends AbstractController
 
         $this->addSuccessFlash('Please check your email.');
 
-        return $this->redirectBack('/register');
+        return $this->redirectBack();
     }
 
     #[Route('/register/verify-email', methods: ['GET', 'HEAD'], name: 'pactions.register.verify-email')]
@@ -106,7 +106,7 @@ class RegisterController extends AbstractController
     public function createProfile(CreateProfileInput $input, TokenStorageInterface $tokenStorage): RedirectResponse
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack('/register/create-profile');
+            return $this->redirectBack();
         }
 
         $firstName = $input->getFirstNameParam();

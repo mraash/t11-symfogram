@@ -24,11 +24,9 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements
     AuthenticationEntryPointInterface,
     InteractiveAuthenticatorInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
-    {
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator
+    ) {
     }
 
     public function supports(Request $request): bool

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SymfonyExtension\Http\Controller;
 
 use Library\Exceptions\UnexpectedReturnTypeException;
-use Library\Exceptions\UnexpectedTypeException;
 use SymfonyExtension\Http\Input\AbstractInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as AbstractSymfonyController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,8 +32,8 @@ abstract class AbstractController extends AbstractSymfonyController
             $path = $defaultPath;
         }
 
-        if ($path === null) {
-            throw new UnexpectedTypeException();
+        if ($path === null && $this->currentRequest->isMethod('POST')) {
+            $path = $this->currentRequest->getPathInfo();
         }
 
         return $this->redirect($path, $status);

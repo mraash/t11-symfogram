@@ -24,17 +24,17 @@ class AccountController extends AbstractController
         parent::__construct($requestStack);
     }
 
-    #[Route('account/edit', methods: ['GET', 'HEAD'], name: 'pages.account.edit')]
+    #[Route('/account/edit', methods: ['GET', 'HEAD'], name: 'pages.account.edit')]
     public function showEdit(): Response
     {
         return $this->render('pages/account/edit.twig');
     }
 
-    #[Route('account/edit', methods: ['POST'], name: 'actions.account.edit')]
+    #[Route('/account/edit', methods: ['POST'], name: 'actions.account.edit')]
     public function edit(EditAccountInput $input): RedirectResponse
     {
         if (!$this->validateInput($input)) {
-            return $this->redirectBack('/account/edit');
+            return $this->redirectBack();
         }
 
         $firstName = $input->getFirstNameParam();
@@ -49,10 +49,10 @@ class AccountController extends AbstractController
 
         $this->userService->save($user);
 
-        return $this->redirectBack('/account/edit');
+        return $this->redirectBack();
     }
 
-    #[Route('account/add-avatar', methods: ['POST'], name: 'actions.account.create-avatar')]
+    #[Route('/account/add-avatar', methods: ['POST'], name: 'actions.account.create-avatar')]
     public function createAvatar(CreateAvatarInput $input): RedirectResponse
     {
         if (!$this->validateInput($input)) {
