@@ -132,6 +132,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
@@ -143,13 +153,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
      * @see UserInterface
      */
-    public function getUserIdentifier(): string
+    public function eraseCredentials(): void
     {
-        return (string) $this->email;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     /**
@@ -159,23 +181,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        $roles[] = UserRoles::Created->value;
+        return $this->roles;
+    }
 
-        return array_unique($roles);
+    /**
+     * @param UserRoles[] $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $stringRoles = array_map(fn ($roleEnum) => $roleEnum->value, $roles);
+
+        $this->roles = $stringRoles;
     }
 
     public function hasRole(UserRoles $role): bool
     {
         return in_array($role->value, $this->roles);
-    }
-
-    /**
-     * @param string[] $roles
-     */
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
     }
 
     public function addRole(UserRoles $role): void
@@ -237,28 +258,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBasedRole(bool $value): void
     {
         $this->setRole(UserRoles::Based, $value);
-    }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function getFirstName(): string|null
