@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Auth\RegistrationController;
 
-use App\Domain\Constant\UserRoles;
+use App\Domain\Type\UserRoles;
 use App\Domain\Entity\EmailVerificationToken;
 use App\Domain\Entity\User;
 use App\Domain\Repository\EmailVerificationTokenRepository;

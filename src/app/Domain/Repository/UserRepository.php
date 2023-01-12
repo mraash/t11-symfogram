@@ -2,7 +2,7 @@
 
 namespace App\Domain\Repository;
 
-use App\Domain\Constant\UserRoles;
+use App\Domain\Type\UserRoles;
 use App\Domain\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyExtension\Domain\Repository\AbstractRepository;

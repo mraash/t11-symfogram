@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Constant;
+namespace App\Domain\Type;
 
 enum UserRoles: string
 {

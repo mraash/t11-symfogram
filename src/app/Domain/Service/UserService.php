@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Service;
 
-use App\Domain\Constant\UserRoles;
+use App\Domain\Type\UserRoles;
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepository;
 use Doctrine\Common\Collections\Criteria;
