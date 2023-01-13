@@ -8,6 +8,7 @@ use App\Domain\Entity\Post;
 use App\Domain\Entity\User;
 use App\Domain\Repository\PostImageRepository;
 use App\Domain\Repository\PostRepository;
+use SymfonyExtension\Domain\Exception\LogicException;
 use SymfonyExtension\Domain\Service\AbstractService;
 
 /**
@@ -39,6 +40,10 @@ class PostService extends AbstractService
      */
     public function create(User $user, string $title = null, array $imageUriList = []): Post
     {
+        if ($title === null && empty($imageUriList)) {
+            throw new LogicException();
+        }
+
         $post = new Post();
 
         $post->setOwner($user);
