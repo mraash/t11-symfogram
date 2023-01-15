@@ -61,7 +61,7 @@ class RegisterController extends AbstractController
             return $this->redirectBack();
         }
 
-        $user = $this->userService->create($email, $password);
+        $user = $this->userService->createAccount($email, $password);
 
         $this->emailVerifier->createTokenAndSendEmail($user);
 

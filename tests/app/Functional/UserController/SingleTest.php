@@ -50,7 +50,15 @@ class SingleTest extends WebTestCase
 
     public function test_single_page(): void
     {
-        $visitedUser = $this->userService->create('test2@test.com', '123', 'Bb', 'Bbb', true, true);
+        $visitedUser = new User();
+        $visitedUser->setEmail('test2@test.com');
+        $visitedUser->setPassword('123');
+        $visitedUser->setFirstName('Bb');
+        $visitedUser->setLastName('Bbb');
+        $visitedUser->addVerifiedRole();
+        $visitedUser->addBasedRole();
+
+        $this->userService->save($visitedUser);
 
         $id = $visitedUser->getId();
 

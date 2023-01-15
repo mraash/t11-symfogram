@@ -38,24 +38,14 @@ class UserService extends AbstractService
         parent::__construct($repository);
     }
 
-    public function create(
-        string $email,
-        string $plainPassword,
-        string $firstName = null,
-        string $lastName = null,
-        bool $hasVerifiedRole = false,
-        bool $hasBasedRole = false,
-    ): User {
+    public function createAccount(string $email, string $plainPassword): User
+    {
         $user = new User();
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
 
         $user->setEmail($email);
         $user->setPassword($hashedPassword);
-        $user->setFirstName($firstName);
-        $user->setLastName($lastName);
-        $user->setVerifiedRole($hasVerifiedRole);
-        $user->setBasedRole($hasBasedRole);
 
         $this->save($user);
 

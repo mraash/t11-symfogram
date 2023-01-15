@@ -50,18 +50,28 @@ class IndexTest extends WebTestCase
 
     public function test_index_page(): void
     {
-        $this->userService->create('test2@test.com', '123', 'Bb', 'Bbb', true, true);
-        $this->userService->create('test3@test.com', '123', 'Cc', 'Ccc', true, true);
-        $this->userService->create('test4@test.com', '123', 'Dd', 'Ddd', true, false);
-        $this->userService->create('test5@test.com', '123', 'Ee', 'Eee', false, false);
+        $user1 = new User();
+        $user1->setEmail('test2@test.com');
+        $user1->setPassword('123');
+        $user1->setFirstName('Bb');
+        $user1->setLastName('Bbb');
+        $user1->addVerifiedRole();
+        $user1->addBasedRole();
+
+        $user2 = new User();
+        $user2->setEmail('test3@test.com');
+        $user2->setPassword('123');
+        $user2->setFirstName('Cc');
+        $user2->setLastName('Ccc');
+        $user2->addVerifiedRole();
+
+        $this->userService->saveList([$user1, $user2]);
 
         $this->client->request('GET', '/users');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('tbody', 'Aaa');
         $this->assertSelectorTextContains('tbody', 'Bbb');
-        $this->assertSelectorTextContains('tbody', 'Ccc');
-        $this->assertSelectorTextNotContains('tbody', 'Ddd');
-        $this->assertSelectorTextNotContains('tbody', 'Eee');
+        $this->assertSelectorTextNotContains('tbody', 'Ccc');
     }
 }
